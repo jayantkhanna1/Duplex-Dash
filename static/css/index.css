@@ -3,12 +3,12 @@ body{
     background-color: white !important;
 }
 #sign_up_in{
-    background-color: black;
+    background-color: rgb(3, 1, 2, 56%);
     display: flex;
-    justify-content: right;
+    justify-content: space-between;
     align-items: center;
-    padding-top: 13px;
-    padding-bottom: 13px;
+    padding-top: 18px;
+    padding-bottom: 18px;
     padding-right: 13px;
     height: 50px;
 }
@@ -26,7 +26,7 @@ body{
 }
 
 #header{
-    background : url('../images/bg_img.svg');
+    background : url('../images/bg.png');
     height: 656px;
 }
 #logo{
@@ -44,6 +44,7 @@ body{
     align-items: center;
 }
 #header_right{
+    margin-top: 40px;
     margin-right: 15px;
 }
 #header_right a{
@@ -197,6 +198,88 @@ footer{
     padding-right: 13px;
     height: 50px;
 }
-#user_profile img{
-   
+#user_profile{
+    background-color: rgb(3, 1, 2, 56%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 18px;
+    padding-bottom: 18px;
+    padding-right: 13px;
+    height: 50px;
+}
+#user_img{
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin-right: 15px;
+
+}
+#right_signin_a{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#right_signin_a p{
+    color: white;
+    font-size: 16px;
+    margin-right: 15px;
+    text-decoration: none;
+}
+#user_info_modal{
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+    height: 290px;
+    width: 350px;
+    position: absolute;
+    top: 82px;
+    right: 80px;
+    border-radius: 12px;
+}
+#triangle{
+    position: absolute;
+    top: -8px;
+    right: 45px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid white;
+}
+#name_modal{
+    text-align: center;
+    color: #323232 !important;
+    font-size: 18px;
+    font-weight: 500;
+
+}
+#email_modal{
+    color: #595959 !important;
+    margin-top: -13px;
+}
+.hr_options{
+    width: 260px;
+    height: 0 !important;
+    border-top: #DBDBDB !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+.option div{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 25px;
+    padding-left: 25px;
+}
+.option{
+    text-decoration: none;
+}
+.option div p{
+    text-decoration: none;
+}
+#hr_option_1{
+    margin-top: 25px !important;
 }

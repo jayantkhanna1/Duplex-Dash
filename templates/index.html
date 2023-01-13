@@ -27,24 +27,36 @@
 <body>
     <body>
         <div class="page home-page">
-            {% if login %}
-            <div id="user_profile">
-                <img src="" alt="">
-            </div>
-            <script>
-                console.log("{{user.image}}")
-            </script>
-            {% else %}
-            <div id="sign_up_in">
-                <a href="login" id="sign_in">Sign in</a>
-                <a href="signup" id="sign_up">Sign up</a>
-            </div>
-            {% endif %}
 
             <header id="header">
+                {% if login %}
+                <div id="user_profile">
+                    <div id="left_signin">
+                        <img src="{% static 'images/logo.svg' %}" alt="" id="logo">
+                    </div>
+                    <div id="right_signin">
+                        <a href="javascript:void(0)" onclick="open_user_details_modal()" id="right_signin_a">
+                            <img id="user_img" src="{% static 'images/user_def.svg' %}" alt="">
+                            <p>Hi Jayant</p>
+                        </a>
+                    </div>
+                   
+                </div>
+                {% else %}
+                <div id="sign_up_in">
+                    <div id="left_signin">
+                        <img src="{% static 'images/logo.svg' %}" alt="" id="logo">
+                    </div>
+                    <div id="right_signin">
+                        <a href="login" id="sign_in">Sign in</a>
+                        <a href="signup" id="sign_up">Sign up</a>
+                    </div>
+                    
+                </div>
+                {% endif %}
                 <div id="header_top">
                     <div id="header_left">
-                        <img src="{% static 'images/logo.svg' %}" alt="" id="logo">
+                        
                     </div>
                     <div id="header_right">
                         <a href="home">Home</a>
@@ -172,6 +184,38 @@
             <!--end content-->
         </div>
         
+    <!-- Modal for user info -->
+    <div id="user_info_modal">
+        <div id="triangle"></div>
+        <div id="details_modal">
+            <p id="name_modal">Jayant Khanna</p>
+            <p id="email_modal">jayantkhanna3105@gmail.com</p>
+        </div>
+        <div id="options_modal">
+            <hr class="hr_options"  id="hr_option_1">
+            <a href="userdashboard" class="option">
+                <div>
+                    <p>Dashboard</p>
+                    <img src="{% static 'images/arrow.svg' %}" alt="">  
+                </div>
+            </a>
+            <hr class="hr_options">
+            <a href="usersettings" class="option">
+                <div>
+                    <p>Settings</p>
+                    <img src="{% static 'images/arrow.svg' %}" alt="">  
+                </div>
+            </a>
+            <hr class="hr_options">
+            <a href="logout" class="option">
+                <div>
+                    <p>Log out</p>
+                    <img src="{% static 'images/arrow.svg' %}" alt="">  
+                </div>
+            </a>
+            <hr class="hr_options">
+        </div>
+    </div>
 	<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
@@ -181,6 +225,6 @@
 	<script src="{% static 'js/icheck.min.js' %}"></script>
 	<script src="{% static 'js/jquery.validate.min.js' %}"></script>
 	<script src="{% static 'js/custom.js' %}"></script>
-
+    <script src="{% static 'js/index.js' %}"></script>
 </body>
 </html>

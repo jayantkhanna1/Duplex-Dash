@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title -->
+    <title>Sign Up</title>
+
+    <!-- Login Css -->
+    <link rel="stylesheet" href="{%static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/selectize.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- Logo -->
+    <link rel="icon" type="image/png" href="../static/images/logo.svg">
+</head>
+<body>
+    <!-- Header Computer View -->
+    <header>
+        <div id="left_header">
+            <img src="{%static 'images/logo.svg' %}" alt="logo">
+        </div>
+        <div id="right_header">
+            <a href="home">Home</a>
+            <a href="pricing">Pricing</a>
+            <a href="">Contact</a>
+            <a href="">Submit Ad</a>
+        </div>
+    </header>
+
+    <!-- Header Mobile View -->
+
+    <!-- Login Heading -->
+    <section id="login_heading">
+        <h2>Create New Account</h2>
+        <p>Where listings meet opportunity.</p>
+    </section>
+
+    <!-- Login Form -->
+    <form action="signup_form" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div id="email_div">
+            <label for="email">Email</label><br>
+            <input type="email" name="email" id="email" placeholder="Enter your Email" required>
+        </div>
+        <div id="password_div">
+            <label for="password">Password</label><br>
+            <input type="password" name="password" id="password" placeholder="Enter your Password" required>
+        </div>
+        <div id="terms_div">
+            <input type="checkbox" name="terms" id="terms" required>
+            <label for="terms">I agree to the <a href="">Terms of Use</a> and <a href="">Privacy Policy</a></label>
+        </div>
+        <div id="login_button">
+            <input type="submit" value="Sign in">
+        </div>
+    </form>
+    <p id="signup_tag_p">Already have an account? <a href="login" id="signup">Login</a></p>
+
+    <div class="toast" id="toast">
+        <div class="toast-body">
+        </div>
+    </div>
+    <input id="hidden_toast" value="off" style="display: none;" readonly type="text">
+    <script>
+        const toast = document.getElementById('toast');
+       
+        '{% for message in messages %}'
+                 
+            if('{{message}}' == 'Email Already Exists!'){
+                toast.classList.add('visible');
+                toast.querySelector('.toast-body').innerHTML = "Email Already Exists!";
+                toast.classList.add('toast-body-error');
+                document.getElementById("hidden_toast").value = "on"
+            }
+        '{% endfor %}'
+        
+        if(document.getElementById("hidden_toast").value == "on"){
+            setTimeout(remove_toast,4000)
+            
+        }
+        function remove_toast(){
+            const toast = document.getElementById('toast');
+            toast.classList.remove('visible');
+            document.getElementById("hidden_toast").value = "off"
+        }
+    </script>
+</body>
+</html>
