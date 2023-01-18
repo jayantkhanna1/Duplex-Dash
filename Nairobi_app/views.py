@@ -163,3 +163,8 @@ def otp_verify_forgot_password(request):
     else:
         messages.info(request, 'OTP is incorrect!')
         return render(request, 'otp_forgot_password.html',{'email': email})
+
+def reset_password(request):
+    password = request.POST['password']
+    confirm_password  = request.POST['confirm_password']
+    email = request.POST['email']

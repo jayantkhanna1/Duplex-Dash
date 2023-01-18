@@ -15,6 +15,7 @@ urlpatterns = [
     path('forgot_password', views.forgot_password, name='forgot_password'),
     path('forgot_password_form', views.forgot_password_form, name='forgot_password_form'),
     path('otp_verify_forgot_password', views.otp_verify_forgot_password, name='otp_verify_forgot_password'),
+    path('reset_password', views.reset_password, name='reset_password'),
 
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
