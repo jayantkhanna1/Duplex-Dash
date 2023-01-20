@@ -168,3 +168,7 @@ def reset_password(request):
     password = request.POST['password']
     confirm_password  = request.POST['confirm_password']
     email = request.POST['email']
+
+    if password != confirm_password:
+        messages.info(request, 'Passwords do not match!')
+        return render(request, 'reset_password.html',{'email': email})
