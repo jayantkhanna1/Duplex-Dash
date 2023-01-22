@@ -172,3 +172,14 @@ def reset_password(request):
     if password != confirm_password:
         messages.info(request, 'Passwords do not match!')
         return render(request, 'reset_password.html',{'email': email})
+    
+    # Hashing Password
+    password=sha512.hash(password, rounds=5000,salt="NairobiApp")
+
+    # Updating Password
+    user = User.objects.get(email=email)
+    user.password = password
+    user.save()
+
+    # Redirecting to Home
+    return redirect('index')
