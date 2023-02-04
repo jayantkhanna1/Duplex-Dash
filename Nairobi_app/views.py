@@ -15,16 +15,16 @@ otp : int
 def index(request):
     # Getting random listings
     listings = Listing.objects.all().order_by('?')[:8]
-
+    category = Category.objects.all()
     if 'TheNairobiPrivateToken' in request.session:
         # Getting User details
         user = User.objects.get(private_token=request.session['TheNairobiPrivateToken'])
         if user.username == "":
             return redirect('onboarding_form')
-        return render(request, 'index.html', {'privatetoken': request.session['TheNairobiPrivateToken'],'login': True,'listings': listings,'user': user})
+        return render(request, 'index.html', {'privatetoken': request.session['TheNairobiPrivateToken'],'login': True,'listings': listings,'user': user,'category':category})
     
     user = User.objects.get(email="jayantkhanna3105@gmail.com")
-    return render(request, 'index.html',{'login': False,'listings': listings})
+    return render(request, 'index.html',{'login': False,'listings': listings,'category':category})
 
 def login(request):
     return render(request, 'login.html')

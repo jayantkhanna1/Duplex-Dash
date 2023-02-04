@@ -6,6 +6,7 @@
 	<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="author" content="ThemeStarz">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Internal CSS -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
@@ -79,11 +80,13 @@
                                 <input type="text" id="where-input" name="where" placeholder="What are you looking for?">
                             </div>
                             <div id="category">
-                                <label class="label_header" for="">Category?</label>
+                                <label class="label_header" id="category_label" for="">Category?</label>
                                 <select name="category" id="category-input">
                                     <option value="">Select a Category</option>
-                                    <option value="1">Category 1</option>
-                                    <option value="2">Category 2</option>
+                                    {% for x in category%}
+                                    <option value="{{category}}">{{category}}</option>
+                                    <option value="{{category}}">{{category}}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             <div id="submit">
@@ -146,7 +149,7 @@
                                 </div>
                             </div>
                             {% endfor %}
-
+                            
                         </div>
                         
                     </div>
