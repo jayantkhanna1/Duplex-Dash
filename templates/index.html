@@ -66,6 +66,11 @@
                         <a href="submitad" id="submit_ad">Submit Ad</a>
                     </div>
                 </div>
+
+                <!-- Mobile Header -->
+                <div id="header_top_mobile">
+                    <span id="menu" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+                </div>
                 <div id="header_bottom">
                     <h2>Buy, Sell Or Find What You need</h2>
 
@@ -219,6 +224,24 @@
             <hr class="hr_options">
         </div>
     </div>
+
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="home">Home</a>
+        <a href="contact">Contact</a>
+        <a href="pricing">Pricing</a>
+        <a href="submitad" id="submit_ad">Submit Ad</a>
+    </div>
+
+    <script>
+        function openNav() {
+          document.getElementById("mySidenav").style.width = "250px";
+        }
+        
+        function closeNav() {
+          document.getElementById("mySidenav").style.width = "0";
+        }
+    </script>
 	<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
