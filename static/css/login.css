@@ -128,3 +128,60 @@ form{
     align-items: center;
     font-size: 12px;
 }
+#header_mobile{
+    display: none;
+}
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgb(255, 255, 255);
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+} 
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}  
+.sidenav a:hover {
+    color: #f1f1f1;
+} 
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+.sidenav{
+    z-index: 99999;
+    background-color: #e5e5e5;
+}
+.sidenav a{
+    font-size: 20px;
+    font-weight: 100;
+}
+@media screen and (max-width: 900px) {
+    body{
+        overflow-x: hidden;
+    }
+    #computer_header{
+        display: none;
+    }
+    #header_mobile{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 25px;
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+}

@@ -6,7 +6,6 @@ from passlib.hash import sha512_crypt as sha512
 import os
 from django.contrib import messages
 import string 
-import random
 from dotenv import load_dotenv
 load_dotenv()
 
