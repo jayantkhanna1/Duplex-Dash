@@ -7,7 +7,7 @@ body{
     background-size: cover;
     background-position-x: center;
 }
-header{
+#computer_header{
     display: flex;
     justify-content: space-between;
     margin-top: 25px;
@@ -183,5 +183,9 @@ form{
         margin-top: 25px;
         margin-left: 15px;
         margin-right: 15px;
+    }
+    .toast {
+        top: 173px;
+        right: 74px;
     }
 }
