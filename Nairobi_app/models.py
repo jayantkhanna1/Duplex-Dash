@@ -7,19 +7,22 @@ class Admin(models.Model):
     email = models.EmailField(max_length=100)
     phone = models.CharField(max_length=100)
     private_token = models.CharField(max_length=100)
-    public_token = models.CharField(max_length=100)
+
+class UserPackage(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.CharField(max_length=100)
+    price = models.CharField(max_length=100)
+    features = models.CharField(max_length=1000)
 
 class User(models.Model):
     username = models.CharField(max_length=100)
     password = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)
     phone = models.CharField(max_length=100)
-    package = models.CharField(max_length=100)
-    rating = models.CharField(max_length=100)
+    #package = models.ForeignKey(UserPackage, on_delete=models.CASCADE,blank=True,null=True)
+    rating = models.CharField(max_length=100,default="0")
     image = models.ImageField(upload_to='static/user_images/', default='static/user_images/default_img.jpg')
     private_token = models.CharField(max_length=100)
-    public_token = models.CharField(max_length=100)
-
 
 class Category(models.Model):
     name = models.CharField(max_length=100) 

@@ -37,8 +37,8 @@
                     </div>
                     <div id="right_signin">
                         <a href="javascript:void(0)" onclick="open_user_details_modal()" id="right_signin_a">
-                            <img id="user_img" src="{% static 'images/user_def.svg' %}" alt="">
-                            <p>Hi Jayant</p>
+                            <img id="user_img" src="{{user.image.url}}" alt="">
+                            <p>Hi {{username}}</p>
                         </a>
                     </div>
                    

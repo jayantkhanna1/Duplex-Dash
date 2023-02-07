@@ -17,12 +17,16 @@ def index(request):
     category = Category.objects.all()
     if 'TheNairobiPrivateToken' in request.session:
         # Getting User details
-        user = User.objects.get(private_token=request.session['TheNairobiPrivateToken'])
-        if user.username == "":
-            return redirect('onboarding_form')
-        return render(request, 'index.html', {'privatetoken': request.session['TheNairobiPrivateToken'],'login': True,'listings': listings,'user': user,'category':category})
-    
-    user = User.objects.get(email="jayantkhanna3105@gmail.com")
+        try:
+            user = User.objects.get(private_token=request.session['TheNairobiPrivateToken'])
+            if user.username == "":
+                return redirect('onboarding_form')
+            # Getting just first name of user
+            username = user.username.split(" ")[0].capitalize()
+            return render(request, 'index.html', {'privatetoken': request.session['TheNairobiPrivateToken'],'login': True,'listings': listings,'user': user,'category':category,'username':username})
+        except:
+            pass
+    #user = User.objects.get(email="jayantkhanna3105@gmail.com")
     return render(request, 'index.html',{'login': False,'listings': listings,'category':category})
 
 def login(request):
@@ -85,7 +89,11 @@ def otp_verify(request):
         return render(request, 'otp.html',{'email': email,'password': password})
 
 def onboarding_form(request):
-    return render(request, 'onboarding.html')
+    # Check if there is a redirect in get request
+    if 'redirect' in request.GET:
+        redirect = request.GET['redirect']
+        return render(request, 'onboarding.html',{'redirect': redirect})
+    return render(request, 'onboarding.html',{'redirect': 'home'})
 
 def logout(request):
     del request.session['TheNairobiPrivateToken']
@@ -182,3 +190,45 @@ def reset_password(request):
 
     # Redirecting to Home
     return redirect('index')
+
+def submitad(request):
+    if 'TheNairobiPrivateToken' in request.session:
+        private_token = request.session['TheNairobiPrivateToken']
+        if User.objects.filter(private_token=private_token).exists():
+            user = User.objects.get(private_token=private_token)
+            if user.username == "":
+                return redirect('onboarding_form?redirect=submitad')
+            else:
+                return render(request, 'submitad.html')
+        else:
+            return redirect('login')
+    else:
+        return redirect('login')
+    
+def onboard_user(request):
+    if "TheNairobiPrivateToken" in request.session:
+        username = request.POST['username']
+        phone = request.POST['phone']
+        if 'image' in request.FILES:
+            image = request.FILES['image']
+        else:
+            image = ""
+
+        if 'redirect' in request.POST:
+            redirect_to = request.POST['redirect']
+        else:
+            redirect_to = ""
+        private_token = request.session['TheNairobiPrivateToken']
+        user = User.objects.get(private_token=private_token)
+        user.username = username
+        user.phone = phone
+        if image != "":
+            user.image = image
+        user.save()
+
+        if redirect_to != "":
+            return redirect(redirect_to)
+        else:
+            return redirect('home')
+    else:
+        return redirect('login')
