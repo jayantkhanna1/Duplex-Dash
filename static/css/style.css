@@ -1,4 +1,4 @@
-/*------------------------------------------------------------------
+.items:not(.selectize-input) .item .meta /*------------------------------------------------------------------
 Project:	Craigs - Easy Buy & Sell Directory Listing Template
 Version:	1.0
 Last change:	6.9.2017
@@ -957,7 +957,6 @@ Headers:		'Varela Round', sans-serif;
     background-color: #f8f8f8;
     padding: 1.8rem;
     font-size: 1.2rem;
-    width: 100%;
     white-space: nowrap;
     margin-top: -.2rem;
     position: relative;

@@ -1,0 +1,217 @@
+body{
+    background-color: white !important;
+}
+#computer_header{
+    background : url('../images/submitad_header_bg.svg');
+    height: 160px;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#header_mobile{
+    display: none;
+}
+
+#left_header{
+    margin-left: 15px;
+    margin-top: 15px;
+    cursor: pointer;
+}
+#left_header img{
+    width: 115px;
+    margin-left: 73px;
+}
+#right_header{
+    margin-right: 15px;
+    margin-top: 15px;
+}
+#right_header a{
+    margin-right: 15px;
+    color: rgb(0, 0, 0);
+    font-size: 16px;
+    text-decoration: none;
+}
+#heading{
+    margin-left: 100px;
+}
+#heading h3{
+    font-size: 35px;
+    font-weight: 100;
+}
+#type{
+    display: flex;
+    justify-content: center;
+    width: 530px;
+}
+.type_bg{
+    background-color: #F4F4F4;
+    border-radius: 8px;
+    padding: 9px 16px;
+    margin-right: 10px;
+}
+#type_heading{
+    margin-top: 75px;
+    margin-left: 6.5%;
+}
+h5{
+    font-size: 16px;
+    font-weight: 500;
+}
+#title_price{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#title_outer,#price_outer{
+    width: 617px;
+}
+#title_outer{
+    margin-right: 10rem;
+}
+#address{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+    width: 1557px;
+}
+
+#address_outer{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 90%;
+}
+.address{
+    width: 330px;
+}
+#address_heading{
+    margin-left: 100px;
+}
+#country{
+    margin-right: 0 !important;
+}
+#features h5{
+    margin-left: 98px;
+}
+.feature_input{
+    width: 1334px !important;
+    margin-left: 100px;
+    margin-bottom: 25px;
+}
+#gallery_heading{
+    margin-left: 95px;
+}
+#add_feature{
+    margin-left: 100px;
+    padding: 15px 25px;
+    cursor: pointer;
+    width: 1368px !important;
+    outline: none;
+    border: none;
+    background-color: #f1f1f1;
+    border-radius: 6px;
+    font-size: 15px;
+    color: #525252;
+    box-shadow: 2px 20px 20px #dcdcdc;
+    margin-bottom: 50px;
+    font-weight: 500;
+}
+#description{
+    margin-left: 95px;
+}
+#description textarea:hover{
+    box-shadow: inset 0 0 0 0.1rem rgb(0 0 0 / 0%);
+    border: 0.1rem solid rgba(0,0,0, .25);
+}
+#description textarea{
+    box-shadow: inset 0 0 1rem 0 rgb(0 0 0 / 10%);
+    border: 0.1rem solid rgba(0,0,0, .15);
+    border-radius: 0.3rem;
+    color: #363636;
+    transition: .3s;
+    transform-style: preserve-3d;
+    background-color: #fff;
+    font-size: 1.4rem;
+    outline: none !important;
+    width: 93.5%;
+    height: inherit;
+    padding: 1.6rem;
+    resize: vertical;
+    height: 150px;
+}
+.drop-zone__thumb{
+    width: 200px !important;
+}
+.drop-zone {
+    margin-right: 160px;
+    margin-bottom: 40px;
+    max-width: 200px;
+    height: 200px;
+    padding: 25px;
+    text-align: center;
+    font-family: "Quicksand", sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    cursor: pointer;
+    color: #cccccc;
+    border: 4px dashed #F5E443;
+    border-radius: 10px;
+  }
+  
+  .drop-zone--over {
+    border-style: solid;
+  }
+  
+  .drop-zone__input {
+    display: none;
+  }
+  
+  .drop-zone__thumb {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #cccccc;
+    background-size: cover;
+    position: relative;
+  }
+  
+  .drop-zone__thumb::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 5px 0;
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.75);
+    font-size: 14px;
+    text-align: center;
+  }
+  
+  #gallery{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 1557px;
+  }
+#submit_ad_button{
+    margin-left: 150px;
+    margin-bottom: 50px;
+    margin-top: 70px;
+    padding: 15px 25px;
+    cursor: pointer;
+    background-color: #F5E443;
+    border-radius: 6px;
+    font-size: 15px;
+    color: #525252;
+    box-shadow: 2px 20px 20px #dcdcdc;
+    font-weight: 600;
+    outline: none;
+    border: none;
+}

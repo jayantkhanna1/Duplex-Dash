@@ -1,12 +1,186 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Meta -->
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="ThemeStarz">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+
+    <!-- Internal CSS -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/selectize.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/submitad.css' %}">
+
+    <!-- Title -->
+	<title>The Nairobi Listing</title>
+
+    <!-- Logo in  -->
+    <link rel="icon" type="image/png" href="../static/images/logo.svg">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    yes
+    <!-- Header Computer View -->
+    <header id="computer_header">
+        <div id="left_header">
+            <img src="{%static 'images/logo.svg' %}" alt="logo">
+        </div>
+        <div id="right_header">
+            <a href="home">Home</a>
+            <a href="pricing">Pricing</a>
+            <a href="">Contact</a>
+            <a href="">Submit Ad</a>
+        </div>
+    </header>
+
+    <!-- Header Mobile View -->
+    <header id="header_mobile">
+        <div id="left_header">
+            <img src="{%static 'images/logo.svg' %}" alt="logo">
+        </div>
+        <div id="right_header">
+            <span id="menu" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+        </div>
+    </header>
+
+    <!-- Heading for submit ad -->
+    <section id="heading">
+        <h3>Submit Ad</h3>
+    </section>
+    <section id="form">
+        <form action="newlisting" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h5 id="type_heading">Type : </h5>
+            <div id="type">
+                <div class="type_bg">
+                    <input value="Sale" type="radio" name="tag" id="tag1" required>
+                    <label for="tag1">Sale</label>
+                </div>
+                <div class="type_bg">
+                    <input value="Rent" type="radio" name="tag" id="tag2" required>
+                    <label for="tag2">Rent</label>
+                </div>
+                <div class="type_bg">
+                    <input value="Other" type="radio" name="tag" id="tag3" required>
+                    <label for="tag3">Other</label>
+                </div>
+            </div>
+            <div id="title_price">
+                <div id="title_outer">
+                    <h5>Title :</h5>
+                    <input required placeholder="Title of Listing" name="title" type="text">
+                </div>
+                <div id="price_outer">
+                    <h5>Price :</h5>
+                    <input required name="price" placeholder="$100 " type="number">
+                </div>
+            </div>
+            <div id="description">
+                <h5>Description :</h5>
+                <textarea required name="description" placeholder="Description of Listing" rows="4" cols="50"></textarea>
+            </div>
+            <h5 id="address_heading">Address :</h5>
+            <div id="address">
+                <div id="address_outer">
+                    <select class="address" name="city" id="city" required>
+                        <option value="">Select City</option>
+                        <option value="Dehradun">Dehradun</option>
+                    </select>
+                    <select class="address"  name="state" id="state" required>
+                        <option value="">Select State</option>
+                        <option value="Uttarakhand">Uttarakhand</option>
+                    </select>
+                    <select class="address" name="country" id="country" required>
+                        <option value="">Select Country</option>
+                        <option value="India">India</option>
+                    </select>
+                    <select class="address" name="category" id="category" required>
+                        <option value="">Select Category</option>
+                        <option value="Real Estate">Real Estate</option>
+                        <option value="Restaurant">Restaurant</option>
+                        <option value="Hotel">Hotel</option>
+                        <option value="Event">Event</option>
+                        <option value="Land">Land</option>
+                        <option value="Commercial Building">Commercial Building</option>
+                        <option value="Airbnb">Airbnb</option>
+                    </select>
+                </div>
+            </div>
+            <div id="features">
+                <h5>Features :</h5>
+                <input class="feature_input" type="text" placeholder="Add First Feature" id="feature_1" name="feature1" required>
+            </div>
+            <button type="button" onclick="addFeature()" id="add_feature">Add Feature</button>
+            <h5 id="gallery_heading">Gallery :</h5>
+            <div id="gallery">
+                <div class="drop-zone">
+                    <span class="drop-zone__prompt">Drop Image here or click to upload</span>
+                    <input type="file" name="image1" class="drop-zone__input" required>
+                </div>
+                <div class="drop-zone">
+                    <span class="drop-zone__prompt">Drop Image here or click to upload</span>
+                    <input type="file" name="image2" class="drop-zone__input">
+                </div>
+                <div class="drop-zone">
+                    <span class="drop-zone__prompt">Drop Image here or click to upload</span>
+                    <input type="file" name="image3" class="drop-zone__input">
+                </div>
+                <div class="drop-zone">
+                    <span class="drop-zone__prompt">Drop Image here or click to upload</span>
+                    <input type="file" name="image4" class="drop-zone__input">
+                </div>
+                <div class="drop-zone">
+                    <span class="drop-zone__prompt">Drop Image here or click to upload</span>
+                    <input type="file" name="image5" class="drop-zone__input">
+                </div>
+                <div class="drop-zone">
+                    <span class="drop-zone__prompt">Drop Image here or click to upload</span>
+                    <input type="file" name="image6" class="drop-zone__input">
+                </div>
+            </div>
+            <input type="submit" value="Submit" id="submit_ad_button">
+        </form>
+    </section>
+    <script>
+        var feat_num = 1;
+        function addFeature(){
+            feat_num+=1;
+            var feature = document.getElementById("feature_1").value;
+            var feature_outer = document.createElement("div");
+            feature_outer.setAttribute("class", "feature_outer");
+            var feature_input = document.createElement("input");
+            feature_input.setAttribute("class", "feature_input");
+            feature_input.setAttribute("type", "text");
+            if (feat_num == 2)
+                var placeholder = "Add Second Feature";
+            else if(feat_num == 3)
+                var placeholder = "Add Third Feature";
+            else if(feat_num == 4)
+                var placeholder = "Add Fourth Feature";
+            else if(feat_num == 5)
+                var placeholder = "Add Fifth Feature";
+            else 
+                var placeholder = "Add Sixth Feature";
+            feature_input.setAttribute("placeholder", placeholder);
+            name = "feature" + feat_num;
+            feature_input.setAttribute("name", name);
+            feature_outer.appendChild(feature_input);
+            var features = document.getElementById("features");
+            features.appendChild(feature_outer);
+            check(feat_num);
+        }
+        function check(feat_num){
+            if(feat_num == 6){
+                var add_feature = document.getElementById("add_feature");
+                add_feature.style.display = "none";
+            }
+        }
+    </script>
+    <script src="{% static 'js/submit_ad.js' %}"></script>
 </body>
 </html>

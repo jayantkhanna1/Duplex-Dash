@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import Admin, User, Category, Package, Listing, UserReviews, ListingReviews
+from .models import Admin, User, Package, Listing, UserReviews, ListingReviews
 import random
 from django.core.mail import send_mail
 from passlib.hash import sha512_crypt as sha512
@@ -14,7 +14,6 @@ otp : int
 def index(request):
     # Getting random listings
     listings = Listing.objects.all().order_by('?')[:8]
-    category = Category.objects.all()
     if 'TheNairobiPrivateToken' in request.session:
         # Getting User details
         try:
@@ -23,11 +22,11 @@ def index(request):
                 return redirect('onboarding_form')
             # Getting just first name of user
             username = user.username.split(" ")[0].capitalize()
-            return render(request, 'index.html', {'privatetoken': request.session['TheNairobiPrivateToken'],'login': True,'listings': listings,'user': user,'category':category,'username':username})
+            return render(request, 'index.html', {'privatetoken': request.session['TheNairobiPrivateToken'],'login': True,'listings': listings,'user': user,'username':username})
         except:
             pass
     #user = User.objects.get(email="jayantkhanna3105@gmail.com")
-    return render(request, 'index.html',{'login': False,'listings': listings,'category':category})
+    return render(request, 'index.html',{'login': False,'listings': listings})
 
 def login(request):
     return render(request, 'login.html')
