@@ -18,6 +18,9 @@ urlpatterns = [
     path('otp_verify_forgot_password', views.otp_verify_forgot_password, name='otp_verify_forgot_password'),
     path('reset_password', views.reset_password, name='reset_password'),
     path('submitad', views.submitad, name='submitad'),
+    path('newlisting', views.newlisting, name='newlisting'),
+    path('packages', views.packages, name='packages'),
+    path('pricing', views.packages, name='pricing'),
 
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

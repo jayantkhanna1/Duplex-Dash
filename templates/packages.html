@@ -1,0 +1,183 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta -->
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="ThemeStarz">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title -->
+    <title>Packages</title>
+    
+    <!-- Logo in  -->
+    <link rel="icon" type="image/png" href="../static/images/logo.svg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Internal CSS -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/selectize.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/packages.css' %}">
+    
+</head>
+<body>
+    <header id="header">
+        <div id="user_profile">
+            <div id="left_signin">
+                <img src="{% static 'images/logo.svg' %}" alt="" id="logo">
+            </div>
+            <div id="right_signin">
+                <a href="javascript:void(0)" onclick="open_user_details_modal()" id="right_signin_a">
+                    <img id="user_img" src="{{user.image.url}}" alt="">
+                    <p>Hi {{username}}</p>
+                </a>
+            </div>
+           
+        </div>
+        
+        <div id="header_top">
+            <div id="header_left">
+                
+            </div>
+            <div id="header_right">
+                <a href="home">Home</a>
+                <a href="contact">Contact</a>
+                <a href="pricing">Pricing</a>
+                <a href="submitad" id="submit_ad">Submit Ad</a>
+            </div>
+        </div>
+
+        <!-- Mobile Header -->
+        <div id="header_top_mobile">
+            <span id="menu" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+        </div>
+        <h2 id="heading">Marketing smarts for growing <br> businesses</h2>
+    </header>
+
+    <section id="pricing">
+        <h3 id="pricing_heading">Choose Best Plan For you</h3>
+        <div id="pricing_inner">
+            <div class="card">
+                <h4 class="title_for_pricing">
+                    Standard
+                </h4>
+                <h5 class="price">$299</h5>
+                <div class="features_pricing">
+                    <p class="pricing_feature"><img class="tick" src="{% static 'images/tick.svg' %}" alt="">Maximum of 3 property listing</p>
+                    <p class="pricing_feature"><img class="tick" src="{% static 'images/tick.svg' %}" alt="">CRM System</p>
+                    <p class="pricing_feature"><img class="tick" src="{% static 'images/tick.svg' %}" alt="">Location on google Maps</p>
+                </div>
+                <div class="buy_now">
+                    <a href="">Buy Now</a>
+                </div>
+            </div>
+            <div class="card">
+                <h4 class="title_for_pricing">
+                    Premium
+                </h4>
+                <h5 class="price">$299</h5>
+                <div class="features_pricing">
+                    <p class="pricing_feature"><img class="tick" src="{% static 'images/tick.svg' %}" alt="">Unlimited property listing</p>
+                    <p class="pricing_feature"><img class="tick" src="{% static 'images/tick.svg' %}" alt="">Featured Tag</p>
+                    <p class="pricing_feature"><img class="tick" src="{% static 'images/tick.svg' %}" alt="">Dedicated Marketing Team</p>
+                </div>
+                <div class="buy_now">
+                    <a href="buynow">Buy Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div id="left_footer">
+            <img src="{% static 'images/logo.svg' %}" alt="">
+            <br>
+            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Asperiores voluptate, dignissimos omnis tenetur officia error pariatur animi optio ab fugit vero veritatis? Quae dolor rem assumenda, unde, saepe in sapiente quo impedit accusantium laudantium nemo!</p>
+            <br>
+            <a href="" id="footer_mail">email@example.com</a>
+            <br>
+            <a href="contact" id="footer_contact_ud">Contact Us</a>
+        </div>
+        <div id="right_footer">
+            <div id="one_right">
+                <h4>Navigation</h4>
+                <a href="home">Home</a>
+                <a href="pricing">Pricing</a>
+                <a href="contact">Contact</a>
+                <a href="submitad">Submit Ad</a>
+                <a href="login">Sign in</a>
+                <a href="signup">Sign Up</a>
+            </div>
+            <div id="two_right">
+                <h4>Legal</h4>
+                <a href="privacy_policy">Privacy Policy</a>
+                <a href="terms_and_condition">Terms and condition</a>
+            </div>
+        </div>
+    </footer> 
+    <!-- Modal for user info -->
+    <div id="user_info_modal">
+        <div id="triangle"></div>
+        <div id="details_modal">
+            <p id="name_modal">Jayant Khanna</p>
+            <p id="email_modal">jayantkhanna3105@gmail.com</p>
+        </div>
+        <div id="options_modal">
+            <hr class="hr_options"  id="hr_option_1">
+            <a href="userdashboard" class="option">
+                <div>
+                    <p>Dashboard</p>
+                    <img src="{% static 'images/arrow.svg' %}" alt="">  
+                </div>
+            </a>
+            <hr class="hr_options">
+            <a href="usersettings" class="option">
+                <div>
+                    <p>Settings</p>
+                    <img src="{% static 'images/arrow.svg' %}" alt="">  
+                </div>
+            </a>
+            <hr class="hr_options">
+            <a href="logout" class="option">
+                <div>
+                    <p>Log out</p>
+                    <img src="{% static 'images/arrow.svg' %}" alt="">  
+                </div>
+            </a>
+            <hr class="hr_options">
+        </div>
+    </div>
+
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="home">Home</a>
+        <a href="contact">Contact</a>
+        <a href="pricing">Pricing</a>
+        <a href="submitad" id="submit_ad">Submit Ad</a>
+    </div>
+
+    <script>
+        function openNav() {
+          document.getElementById("mySidenav").style.width = "250px";
+        }
+        
+        function closeNav() {
+          document.getElementById("mySidenav").style.width = "0";
+        }
+    </script>
+	<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
+	<script src="{% static 'js/selectize.min.js' %}"></script>
+	<script src="{% static 'js/masonry.pkgd.min.js' %}"></script>
+	<script src="{% static 'js/icheck.min.js' %}"></script>
+	<script src="{% static 'js/jquery.validate.min.js' %}"></script>
+	<script src="{% static 'js/custom.js' %}"></script>
+    <script src="{% static 'js/index.js' %}"></script>
+</body>
+</html>

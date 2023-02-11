@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import Admin, User, Package, Listing, UserReviews, ListingReviews
+from .models import Admin, User, Listing, UserReviews, ListingReviews
 import random
 from django.core.mail import send_mail
 from passlib.hash import sha512_crypt as sha512
@@ -198,7 +198,15 @@ def submitad(request):
             if user.username == "":
                 return redirect('onboarding_form?redirect=submitad')
             else:
-                return render(request, 'submitad.html')
+                userpackage = user.package
+                if userpackage is None:
+                    return redirect('packages')
+                elif userpackage == "Standard":
+                    if user.ad_count >= 3:
+                        return redirect('packages')
+                    else:
+                        return render(request, 'submitad.html')
+                return redirect('packages')
         else:
             return redirect('login')
     else:
@@ -229,5 +237,96 @@ def onboard_user(request):
             return redirect(redirect_to)
         else:
             return redirect('home')
+    else:
+        return redirect('login')
+
+def newlisting(request):
+    tag = request.POST['tag']
+    title = request.POST['title']
+    description = request.POST['description']
+    price = request.POST['price']
+    city = request.POST['city']
+    state = request.POST['state']
+    country = request.POST['country']
+    category = request.POST['category']
+    feature1 = request.POST['feature1']
+
+    if 'feature2' in request.POST:
+        feature2 = request.POST['feature2']
+    else:
+        feature2 = None
+
+    if 'feature3' in request.POST:
+        feature3 = request.POST['feature3']
+    else:
+        feature3 = None
+
+    if 'feature4' in request.POST:
+        feature4 = request.POST['feature4']
+    else:
+        feature4 = None
+
+    if 'feature5' in request.POST:
+        feature5 = request.POST['feature5']
+    else:
+        feature5 = None
+
+    if 'feature6' in request.POST:
+        feature6 = request.POST['feature6']
+    else:
+        feature6 = None
+
+    mainImage = request.FILES['image1']
+    if 'image2' in request.FILES:
+        image1 = request.FILES['image2']
+    else:
+        image1 = None
+
+    if 'image3' in request.FILES:
+        image2 = request.FILES['image3']
+    else:
+        image2 = None
+
+    if 'image4' in request.FILES:
+        image3 = request.FILES['image4']
+    else:
+        image3 = None
+
+    if 'image5' in request.FILES:
+        image4 = request.FILES['image5']
+    else:
+        image4 = None
+
+    if 'image6' in request.FILES:
+        image5 = request.FILES['image6']
+    else:
+        image5 = None
+
+    usertoken  = request.session['TheNairobiPrivateToken']
+    user = User.objects.get(private_token=usertoken)
+    userpackage = user.package
+    if userpackage == "Premium":
+        featured = True
+    else:
+        featured = False
+    user = User.objects.get(private_token=usertoken)
+    user_name = user.username
+
+    # incrementing ad count
+
+
+def packages(request):
+    if 'TheNairobiPrivateToken' in request.session:
+        private_token = request.session['TheNairobiPrivateToken']
+        if User.objects.filter(private_token=private_token).exists():
+            user = User.objects.get(private_token=private_token)
+            if user.username == "":
+                return redirect('onboarding_form')
+            else:
+                username = user.username.split(" ")[0].capitalize()
+                print(username)
+                return render(request, 'packages.html',{'user': user, 'username': username,'private_token': private_token})
+        else:
+            return redirect('login')
     else:
         return redirect('login')

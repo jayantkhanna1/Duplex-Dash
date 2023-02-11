@@ -18,17 +18,13 @@ class User(models.Model):
     username = models.CharField(max_length=100)
     description = models.CharField(max_length=10000)
     password = models.CharField(max_length=100)
+    ad_count = models.CharField(max_length=100,default="0")
     email = models.EmailField(max_length=100)
     phone = models.CharField(max_length=100)
-    package = models.ForeignKey(UserPackage, on_delete=models.CASCADE,blank=True,null=True)
+    package = models.CharField(max_length=100,blank=True,null=True)
     rating = models.CharField(max_length=100,default="0")
     image = models.ImageField(upload_to='static/user_images/', default='static/user_images/default_img.jpg')
     private_token = models.CharField(max_length=100)
-
-class Package(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.CharField(max_length=100)
-    price = models.CharField(max_length=100)
 
 class Listing(models.Model):
     name = models.CharField(max_length=100)
