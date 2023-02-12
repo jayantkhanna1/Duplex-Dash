@@ -25,6 +25,9 @@ class User(models.Model):
     rating = models.CharField(max_length=100,default="0")
     image = models.ImageField(upload_to='static/user_images/', default='static/user_images/default_img.jpg')
     private_token = models.CharField(max_length=100)
+    facebook = models.CharField(max_length=100,blank=True,null=True)
+    twitter = models.CharField(max_length=100,blank=True,null=True)
+    instagram = models.CharField(max_length=100,blank=True,null=True)
 
 class Listing(models.Model):
     name = models.CharField(max_length=100)

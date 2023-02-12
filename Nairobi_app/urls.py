@@ -21,6 +21,8 @@ urlpatterns = [
     path('newlisting', views.newlisting, name='newlisting'),
     path('packages', views.packages, name='packages'),
     path('pricing', views.packages, name='pricing'),
+    path('buynow', views.buynow, name='buynow'),
+    path('userprofile', views.userprofile, name='userprofile'),
 
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

@@ -8,9 +8,9 @@
 	<meta name="author" content="ThemeStarz">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Title -->
-    <title>Packages</title>
-    
+     <!-- Title -->
+    <title>{{Username}}</title>
+
     <!-- Logo in  -->
     <link rel="icon" type="image/png" href="../static/images/logo.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -22,27 +22,17 @@
     <link rel="stylesheet" href="{% static 'css/selectize.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
-    <link rel="stylesheet" href="{% static 'css/packages.css' %}">
+    <link rel="stylesheet" href="{% static 'css/user_profile.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'css/packages.css' %}"> -->
     
 </head>
 <body>
     <header id="header">
-        <div id="user_profile">
-            <div id="left_signin">
-                <img src="{% static 'images/logo.svg' %}" alt="" id="logo">
-            </div>
-            <div id="right_signin">
-                <a href="javascript:void(0)" onclick="open_user_details_modal()" id="right_signin_a">
-                    <img id="user_img" src="{{user.image.url}}" alt="">
-                    <p>Hi {{username}}</p>
-                </a>
-            </div>
-           
-        </div>
-        
         <div id="header_top">
             <div id="header_left">
-                
+                <div id="left_signin">
+                    <img src="{% static 'images/logo.svg' %}" alt="" id="logo">
+                </div>  
             </div>
             <div id="header_right">
                 <a href="home">Home</a>
@@ -56,42 +46,59 @@
         <div id="header_top_mobile">
             <span id="menu" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
         </div>
-        <h2 id="heading">Marketing smarts for growing <br> businesses</h2>
     </header>
 
-    <section id="pricing">
-        <h3 id="pricing_heading">Choose Best Plan For you</h3>
-        <div id="pricing_inner">
-            <div class="card">
-                <h4 class="title_for_pricing">
-                    Standard
-                </h4>
-                <h5 class="price">$299</h5>
-                <div class="features_pricing">
-                    <p class="pricing_feature"><img class="tick" src="{% static 'images/tick.svg' %}" alt="">Maximum of 3 property listing</p>
-                    <p class="pricing_feature"><img class="tick" src="{% static 'images/tick.svg' %}" alt="">CRM System</p>
-                    <p class="pricing_feature"><img class="tick" src="{% static 'images/tick.svg' %}" alt="">Location on google Maps</p>
-                </div>
-                <div class="buy_now">
-                    <a href="buynow?package=Standard">Buy Now</a>
-                </div>
+    <section id="userdetails">
+        <!-- To give bend -->
+        <div class="background">
+        </div>
+        <div id="information">
+            <div id="information_left">
+                <img src="{{user.image.url}}" alt="">
             </div>
-            <div class="card">
-                <h4 class="title_for_pricing">
-                    Premium
-                </h4>
-                <h5 class="price">$299</h5>
-                <div class="features_pricing">
-                    <p class="pricing_feature"><img class="tick" src="{% static 'images/tick.svg' %}" alt="">Unlimited property listing</p>
-                    <p class="pricing_feature"><img class="tick" src="{% static 'images/tick.svg' %}" alt="">Featured Tag</p>
-                    <p class="pricing_feature"><img class="tick" src="{% static 'images/tick.svg' %}" alt="">Dedicated Marketing Team</p>
+            <div id="information_right">
+                <h2 id="name">{{user.username}}</h2>
+                <div id="rating_social">
+                    <div id="rating">
+                        <div id="rating_stars">
+                            {% for i in '12345' %}
+                                {% if i <= user.rating %}
+                                    <img class="star" src="{% static 'images/star.svg' %}" alt="">
+                                {% else %}
+                                    <img  class="star" src="{% static 'images/star_empty.svg' %}" alt="">
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div id="social_media">
+                        {% if user.facebook != None%}
+                        <a href="{{user.facebook}}"><i class="fa fa-facebook fa"></i></a>
+                        {% endif %}
+                        {% if user.twitter != None%}
+                        <a href="{{user.twitter}}"><i class="fa fa-twitter fa"></i></a>
+                        {% endif %}
+                        {% if user.instagram != None%}
+                        <a href="{{user.instagram}}"><i class="fa fa-instagram fa"></i></a>
+                        {% endif %}
+                    </div>
                 </div>
-                <div class="buy_now">
-                    <a href="buynow?package=Premium">Buy Now</a>
+                <div id="email_phone">
+                    <div id="email">
+                        <h5>Email</h5>
+                        <p>{{user.email}}</p>
+                    </div>
+                    <div id="phone">
+                        <h5>Phone</h5>
+                        <p>{{user.phone}}</p>
+                    </div>
+                </div>
+                <div id="description">
+                    <p>{{user.description}}</p>
                 </div>
             </div>
         </div>
     </section>
+
     <footer>
         <div id="left_footer">
             <img src="{% static 'images/logo.svg' %}" alt="">

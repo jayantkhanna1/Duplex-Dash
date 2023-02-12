@@ -202,7 +202,7 @@ def submitad(request):
                 if userpackage is None:
                     return redirect('packages')
                 elif userpackage == "Standard":
-                    if user.ad_count >= 3:
+                    if int(user.ad_count) >= 3:
                         return redirect('packages')
                     else:
                         return render(request, 'submitad.html')
@@ -313,7 +313,14 @@ def newlisting(request):
     user_name = user.username
 
     # incrementing ad count
+    user.ad_count = int(user.ad_count) + 1
+    user.save()
 
+    # Creating Listing
+    listing = Listing.objects.create(user=user, user_name=user_name, tag=tag, name=title, description=description, price=price, city=city, state=state, country=country, category=category, feature1=feature1, feature2=feature2, feature3=feature3, feature4=feature4, feature5=feature5, feature6=feature6, mainImage=mainImage, image1=image1, image2=image2, image3=image3, image4=image4, image5=image5, featured=featured)
+    listing.save()
+    url = "/userprofile?userid="+str(user.id)
+    return redirect(url)
 
 def packages(request):
     if 'TheNairobiPrivateToken' in request.session:
@@ -330,3 +337,28 @@ def packages(request):
             return redirect('login')
     else:
         return redirect('login')
+
+def buynow(request):
+    package = request.GET['package']
+    if "TheNairobiPrivateToken" in request.session:
+        usertoken = request.session['TheNairobiPrivateToken']
+        user = User.objects.get(private_token=usertoken)
+        user.package = package
+        user.save()
+        return redirect('home')
+    else:
+        return redirect('login')
+
+def userprofile(request):
+    if "userid" in request.GET:
+        userid = request.GET['userid']
+        if User.objects.filter(id=userid).exists():
+            user = User.objects.get(id=userid)
+            username = user.username.split(" ")[0].capitalize()
+            listings = Listing.objects.filter(user=user)
+            return render(request, 'userprofile.html',{'user': user, 'username': username, 'listings': listings})
+        else:
+            return redirect('home')
+    else:
+        return redirect('home')
+
