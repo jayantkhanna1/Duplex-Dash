@@ -356,9 +356,32 @@ def userprofile(request):
             user = User.objects.get(id=userid)
             username = user.username.split(" ")[0].capitalize()
             listings = Listing.objects.filter(user=user)
-            return render(request, 'userprofile.html',{'user': user, 'username': username, 'listings': listings})
+            reviews = UserReviews.objects.filter(user_for=user)
+            return render(request, 'userprofile.html',{'user': user, 'username': username, 'listings': listings,'reviews': reviews})
         else:
             return redirect('home')
     else:
         return redirect('home')
+        
 
+def new_review(request):
+    user_for = request.POST['user_for']
+    user_by = request.POST['user_by']
+    review = request.POST['review']
+    rating = request.POST['rating_to_be_sent_back']
+    subject = request.POST['subject']
+    if User.objects.filter(id=user_for).exists():
+        user_for = User.objects.get(id=user_for)
+        review = UserReviews.objects.create(user_for=user_for, user_by=user_by, review=review, rating=rating, subject=subject)
+        review.save()
+        # Updating user_for rating
+        user_for_rating = UserReviews.objects.filter(user_for=user_for)
+        total_rating = 0
+        for rating in user_for_rating:
+            total_rating = total_rating + int(rating.rating)
+        user_for.rating = total_rating / len(user_for_rating)
+        user_for.save()
+        url = "/userprofile?userid="+str(user_for.id)
+        return redirect(url)
+    else:
+        return redirect('home')

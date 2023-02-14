@@ -14,6 +14,7 @@
     <!-- Logo in  -->
     <link rel="icon" type="image/png" href="../static/images/logo.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
 
     <!-- Internal CSS -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
@@ -21,10 +22,15 @@
     <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/selectize.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="../static/css/style.css">
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <link rel="stylesheet" href="{% static 'css/user_profile.css' %}">
     <!-- <link rel="stylesheet" href="{% static 'css/packages.css' %}"> -->
-    
+    <style>
+        .items{
+            justify-content: left;
+        }
+    </style>
 </head>
 <body>
     <header id="header">
@@ -36,8 +42,8 @@
             </div>
             <div id="header_right">
                 <a href="home">Home</a>
-                <a href="contact">Contact</a>
-                <a href="pricing">Pricing</a>
+                <a href="usersettings?userid={{user.id}}">Settings</a>
+                <a href="logout">Logout</a>
                 <a href="submitad" id="submit_ad">Submit Ad</a>
             </div>
         </div>
@@ -99,6 +105,141 @@
         </div>
     </section>
 
+    <section id="ads_by_user">
+        <div id="ads_by_user_left">
+            <h2>Ads by {{username}}</h2>
+        </div>
+        <div class="items item-part masonry grid-xl-4-items grid-lg-3-items grid-md-2-items">
+        {% for listing in listings %}
+        <div class="item">
+            {% if listing.featured == True %}
+            <div id="featured"><img src="{% static 'images/featured_tag.svg' %}" alt=""></div>
+            {% endif %}
+            <div id="tag">{{listing.tag}}</div>
+            <!--end ribbon-->
+            <div class="wrapper">
+               <div class="image">
+                  <h3>
+                     <a href="#" class="tag category">{{listing.category_name}}</a>
+                     <a href="showuser?user_id={{lisitng.user}}" class="title">{{listing.name}}</a>
+                  </h3>
+                  <a href="showlisting?listing_id={{lisitng.id}}l" class="image-wrapper background-image">
+                  <img src="{% static 'images/image-01.jpg' %}" alt="">
+                  </a>
+               </div>
+               <!--end image-->
+               <h4 class="location">
+                  <a href="javascript:void(0)" style="text-decoration: none;">{{listing.state}},{{listing.state}}</a>
+               </h4>
+               <div class="price">${{listing.price}}</div>
+               <div class="meta">
+                  <figure>
+                     <i class="fa fa-calendar-o"></i>{{listing.date_added}}
+                  </figure>
+                  <figure>
+                     <a href="user_details?id={{listing.user}}">
+                     <i class="fa fa-user"></i>{{listing.user_name}}
+                     </a>
+                  </figure>
+                  <figure style="margin-right: 25px;">
+                     <a href="javascript:void(0)" onclick="like('{{lisitng.id}}')">
+                     <i style="cursor: pointer;" class="fa fa-2x fa-heart"></i>
+                     </a>
+                  </figure>
+               </div>
+               <!--end meta-->
+               <div class="description">
+                  <p>{{listing.description}}</p>
+               </div>
+               <!--end description-->
+               <a href="showlisting?listing_id={{lisitng.id}}" class="detail text-caps underline">Detail</a>
+            </div>
+         </div>
+        {% endfor %}
+        </div>
+    </section>
+
+    <section id="write_a_review">
+        <div id="write_a_review_left">
+            <h2>Write a Review</h2>
+        </div>
+        <div id="write_a_review_right">
+            <form action="new_review" method="POST" enctype="multipart/form-data" onsubmit="return getRating()">
+                {% csrf_token %}
+                <input type="hidden" name="user_for" value="{{user.id}}">
+                
+                <div id="rating_subject">
+                    <div>
+                        <h4>Your Name</h4>
+                        <input id="username" type="text" name="user_by">
+                    </div>
+                    <div>
+                        <h4>Subject</h4>
+                        <input id="subject" type="text" name="subject">
+                    </div>
+                    <div id="rating_outer">
+                        <h4>Rating</h4>
+                        <div class="stars" id="rating_stars">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+                <div id="review">
+                    <h4>Review</h4>
+                    <textarea name="review" id="" cols="30" rows="10"></textarea>
+                </div>
+                <input type="hidden" name="rating_to_be_sent_back" id="rating_to_be_sent_back">
+                <div id="submit">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section id="review_by_users">
+        <div id="review_by_users_left">
+            <h2>Reviews</h2>
+        </div>
+        <div id="reviews">
+            {% for review in reviews %}
+            <div class="review_card">
+                <div>
+                    <img class="def_img" src="{% static 'images/default_img.jpg' %}" alt="">
+                </div>
+                <div class="info_review">
+                    <div class="heading_review">
+                        <h4>{{review.subject}}</h4>
+                    </div>
+                    <div class="rating_name">
+                        <div class="rating_outer_review">
+                            <div class="rating_stars">
+                                {% for i in '12345' %}
+                                    {% if i <= review.rating %}
+                                        <img class="star" src="{% static 'images/star.svg' %}" alt="">
+                                    {% else %}
+                                        <img  class="star" src="{% static 'images/star_empty.svg' %}" alt="">
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="name_review">
+                            <h4>{{review.user_by}}</h4>
+                        </div>
+                    </div>
+                    <div class="review_text">
+                        <p>{{review.review}}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            
+        </div>
+    </section>
+    
     <footer>
         <div id="left_footer">
             <img src="{% static 'images/logo.svg' %}" alt="">
@@ -186,5 +327,6 @@
 	<script src="{% static 'js/jquery.validate.min.js' %}"></script>
 	<script src="{% static 'js/custom.js' %}"></script>
     <script src="{% static 'js/index.js' %}"></script>
+    <script src="{% static 'js/userprofile.js' %}"></script>
 </body>
 </html>

@@ -23,6 +23,8 @@ urlpatterns = [
     path('pricing', views.packages, name='pricing'),
     path('buynow', views.buynow, name='buynow'),
     path('userprofile', views.userprofile, name='userprofile'),
+    path('userdashboard', views.userprofile, name='userprofile'),
+    path('new_review', views.new_review, name='new_review'),
 
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

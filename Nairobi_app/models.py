@@ -62,6 +62,7 @@ class Listing(models.Model):
 class UserReviews(models.Model):
     user_for = models.ForeignKey(User, on_delete=models.CASCADE)
     user_by = models.CharField(max_length=100)
+    subject = models.CharField(max_length=100)
     review = models.CharField(max_length=10000)
     date_added = models.DateTimeField(auto_now_add=True)
     rating = models.CharField(max_length=100)
@@ -69,6 +70,7 @@ class UserReviews(models.Model):
 class ListingReviews(models.Model):
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
     user = models.CharField(max_length=100)
+    subject = models.CharField(max_length=100)
     review = models.CharField(max_length=10000)
     date_added = models.DateTimeField(auto_now_add=True)
     rating = models.CharField(max_length=100)
