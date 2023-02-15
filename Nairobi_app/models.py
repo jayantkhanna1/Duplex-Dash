@@ -37,7 +37,7 @@ class Listing(models.Model):
     category = models.CharField(max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     user_name = models.CharField(max_length=100)
-    mainImage = models.ImageField(upload_to='static/listing_images/')
+    main_image = models.ImageField(upload_to='static/listing_images/')
     image1 = models.ImageField(upload_to='static/listing_images/',blank=True,null=True)
     image2 = models.ImageField(upload_to='static/listing_images/',blank=True,null=True)
     image3 = models.ImageField(upload_to='static/listing_images/',blank=True,null=True)
@@ -55,8 +55,9 @@ class Listing(models.Model):
     feature4 = models.CharField(max_length=100,blank=True,null=True)
     feature5 = models.CharField(max_length=100,blank=True,null=True)
     feature6 = models.CharField(max_length=100,blank=True,null=True)
-    rating = models.CharField(max_length=100,default="0")
+    rating = models.CharField(max_length=100,default="1")
     video_360_link = models.CharField(max_length=1000,blank=True,null=True)
+    google_map_link = models.CharField(max_length=1000,blank=True,null=True)
 
 
 class UserReviews(models.Model):

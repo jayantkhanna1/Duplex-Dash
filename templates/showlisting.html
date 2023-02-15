@@ -1,0 +1,480 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta -->
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="ThemeStarz">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+     <!-- Title -->
+    <title>{{listingname}}</title>
+
+    <!-- Logo in  -->
+    <link rel="icon" type="image/png" href="../static/images/logo.svg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
+
+    <!-- Internal CSS -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/selectize.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/user_profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/showlisting.css' %}">
+    <style>
+        .items{
+            justify-content: left;
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <div id="header_top">
+            <div id="header_left">
+                <div id="left_signin">
+                    <img src="{% static 'images/logo.svg' %}" alt="" id="logo">
+                </div>  
+            </div>
+            <div id="header_right">
+                <a href="home">Home</a>
+                <a href="usersettings?userid={{user.id}}">Settings</a>
+                <a href="logout">Logout</a>
+                <a href="submitad" id="submit_ad">Add a Listing</a>
+            </div>
+        </div>
+
+        <!-- Mobile Header -->
+        <div id="header_top_mobile">
+            <span id="menu" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+        </div>
+    </header>
+
+    <section id="name_price">
+        <div id="name_price_left">
+            <h1>{{listingname}}</h1>
+        </div>
+        <div id="name_price_right">
+            <p id="price">$ {{listing.price}}</p>
+        </div>
+    </section>
+    <section id="userdetails">
+        <!-- To give bend -->
+        <div class="background">
+        </div>
+        <div id="listing_details">
+            <div>
+                <div id="gallery_heading">
+                    <h2>Gallery</h4>
+                </div>
+                <div id="gallery">
+                    <div id="gallery_main">
+                        <img id="main_image" class="header-image" src="{{listing.main_image.url}}">
+                        <div class="small-images">
+                            <div class="outer_img active" id="outer_img_1" onclick="changeImage('{{listing.main_image.url}}',1)">
+                                <img class="small_img" src="{{listing.main_image.url}}" >
+                            </div>
+                            {% if listing.image1.url != "" %}
+                            <div class="outer_img" id="outer_img_2"  onclick="changeImage('{{listing.image1.url}}',2)">
+                                <img class="small_img" src="{{listing.image1.url}}">
+                            </div>
+                            {% endif %}
+                            {% if listing.image2.url != "" %}
+                            <div class="outer_img" id="outer_img_3"  onclick="changeImage('{{listing.image2.url}}',3)">
+                                <img class="small_img" src="{{listing.image2.url}}">
+                            </div>
+                            {% endif %}
+                            {% if listing.image3.url != "" %}
+                            <div class="outer_img" id="outer_img_4"  onclick="changeImage('{{listing.image3.url}}',4)">
+                                <img class="small_img" src="{{listing.image3.url}}" >
+                            </div>
+                            {% endif %}
+                            {% if listing.image4.url != "" %}
+                            <div class="outer_img" id="outer_img_5"  onclick="changeImage('{{listing.image4.url}}',5)">
+                                <img class="small_img" src="{{listing.image4.url}}">
+                            </div>
+                            {% endif %}
+                            {% if listing.image5.url != "" %}
+                            <div class="outer_img" id="outer_img_6" onclick="changeImage('{{listing.image5.url}}',6)">
+                                <img class="small_img" src="{{listing.image5.url}}" >
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div id="similar_ads">
+                <div id="similar_ads_heading">
+                    <h2 >Similar Ads</h2>
+                </div>
+                <div class="items item-part masonry grid-xl-4-items grid-lg-3-items grid-md-2-items">
+                    <div class="item">
+                        {% if similar_listing.featured == True %}
+                        <div id="featured"><img src="{% static 'images/featured_tag.svg' %}" alt=""></div>
+                        {% endif %}
+                        <div id="tag">{{similar_listing.tag}}</div>
+                        <!--end ribbon-->
+                        <div class="wrapper">
+                            <div class="image">
+                                <h3>
+                                    <a href="#" class="tag category">{{similar_listing.category_name}}</a>
+                                    <a href="showlisting?listing_id={{similar_listing.id}}" class="title">{{similar_listing.name}}</a>
+                                    
+                                </h3>
+                                <a href="showlisting?listing_id={{similar_listing.id}}" class="image-wrapper background-image">
+                                    <img src="{% static 'images/image-01.jpg' %}" alt="">
+                                </a>
+                            </div>
+                            <!--end image-->
+                            <h4 class="location">
+                                <a href="javascript:void(0)" style="text-decoration: none;">{{similar_listing.state}},{{similar_listing.state}}</a>
+                            </h4>
+                            <div class="price">${{similar_listing.price}}</div>
+                            <div class="meta">
+                                <figure>
+                                    <i class="fa fa-calendar-o"></i>{{similar_listing.date_added}}
+                                </figure>
+                                <figure>
+                                    <a href="userprofile?userid={{similar_listing.user_id}}">
+                                        <i class="fa fa-user"></i>{{similar_listing.user_name}}
+                                    </a>
+                                </figure>
+                                <figure style="margin-right: 25px;">
+                                    <a href="javascript:void(0)" onclick="like('{{lisitng.id}}')">
+                                        <i style="cursor: pointer;" class="fa fa-2x fa-heart"></i>
+                                    </a>
+                                </figure>
+                            </div>
+                            <!--end meta-->
+                            <div class="description">
+                                <p>{{similar_listing.description}}</p>
+                            </div>
+                            <!--end description-->
+                            <a href="showlisting?listing_id={{similar_listing.id}}" class="detail text-caps underline">Detail</a>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="details">
+        <div id="description">
+            <div id="heading_description">
+                <h2>Description</h2>
+            </div>
+            <div id="description_info">
+                <p>{{listing.description}}</p>
+            </div>
+        </div>
+        <div>
+            <div id="heading_details">
+                <h2>Details</h2>
+            </div>
+            <div id="details_info">
+                <div id="headings_info">
+                    <p>Date Added:</p>
+                    <p>Type : </p>
+                    <p>location : </p>
+                    <p>Rating : </p>
+                </div>
+                <div>
+                    <p>{{listing.date_added}}</p>
+                    <p>{{listing.category}}</p>
+                    <p>{{listing.state}}, {{listing.city}}</p>
+                    <div>
+                        {% for i in '12345' %}
+                            {% if i <= listing.rating %}
+                                <img class="star" src="{% static 'images/star.svg' %}" alt="">
+                            {% else %}
+                                <img  class="star" src="{% static 'images/star_empty.svg' %}" alt="">
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features">
+        <div id="heading_features">
+            <h2>Features</h2>
+        </div>
+        <div id="features_info">
+            <div>
+                {% if listing.feature1 != '' %}
+                <div class="feature">
+                    <img src="{% static 'images/feature.svg' %}" alt="">
+                    <p>{{listing.feature1}}</p>
+                </div>
+                {% endif %} 
+                {% if listing.feature3 != '' %}
+                <div class="feature">
+                    <img src="{% static 'images/feature.svg' %}" alt="">
+                    <p>{{listing.feature3}}</p>
+                </div>
+                {% endif %}
+                {% if listing.feature5 != '' %}
+                <div class="feature">
+                    <img src="{% static 'images/feature.svg' %}" alt="">
+                    <p>{{listing.feature5}}</p>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div>
+                {% if listing.feature2 != '' %}
+                <div class="feature">
+                    <img src="{% static 'images/feature.svg' %}" alt="">
+                    <p>{{listing.feature2}}</p>
+                </div>
+                {% endif %}
+                {% if listing.feature4 != '' %}
+                <div class="feature">
+                    <img src="{% static 'images/feature.svg' %}" alt="">
+                    <p>{{listing.feature4}}</p>
+                </div>
+                {% endif %}
+                {% if listing.feature6 != '' %}
+                <div class="feature">
+                    <img src="{% static 'images/feature.svg' %}" alt="">
+                    <p>{{listing.feature6}}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <section id="contact_author">
+        <div id="contact_author_heading">
+            <h2>Author</h2>
+        </div>
+        <div id="contact_author_info">
+            <div>
+                <div id="info_main">
+                    <div>
+                        <img src="{{user.image.url}}" alt="">
+                    </div>
+                    <div id="heading_info_main">
+                        <h4>{{username}}</h4>
+                        <!-- Rating -->
+                        <div id="rating_author_info">
+                            {% for i in '12345' %}
+                                {% if i <= user.rating %}
+                                    <img class="star" src="{% static 'images/star.svg' %}" alt="">
+                                {% else %}
+                                    <img  class="star" src="{% static 'images/star_empty.svg' %}" alt="">
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div id="contact_info">
+                    <div id="phone_email">
+                        <p>Phone : </p>
+                        <p>Email : </p>
+                    </div>
+                    <div id="phone_email_final">
+                        <p>{{user.phone}}</p>
+                        <p>{{user.email}}</p>
+                    </div>
+                </div>
+            </div>
+            <div id="form_contact_author">
+                <h2>Get in Touch: </h2>
+                <form action="">
+                    <div>
+                        <h4>Name</h4>
+                        <input class="author_contact_input" type="text">
+                    </div>
+                    <div>
+                        <h4>Email</h4>
+                        <input class="author_contact_input" type="email">
+                    </div>
+                    <div>
+                        <h4>Message</h4>
+                        <textarea class="author_contact_input" name="" id="" cols="30" rows="10"></textarea>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section id="write_a_review">
+        <div id="write_a_review_left">
+            <h2>Write a Review</h2>
+        </div>
+        <div id="write_a_review_right">
+            <form action="new_review_listing" method="POST" enctype="multipart/form-data" onsubmit="return getRating()">
+                {% csrf_token %}
+                <input type="hidden" name="listing" value="{{listing.id}}">
+                
+                <div id="rating_subject">
+                    <div>
+                        <h4>Your Name</h4>
+                        <input id="username" type="text" name="name">
+                    </div>
+                    <div>
+                        <h4>Subject</h4>
+                        <input id="subject" type="text" name="subject">
+                    </div>
+                    <div id="rating_outer">
+                        <h4>Rating</h4>
+                        <div class="stars" id="rating_stars">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+                <div id="review">
+                    <h4>Review</h4>
+                    <textarea name="review" id="" cols="30" rows="10"></textarea>
+                </div>
+                <input type="hidden" name="rating_to_be_sent_back" id="rating_to_be_sent_back">
+                <div id="submit">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section id="review_by_users">
+        <div id="review_by_users_left">
+            <h2>Reviews</h2>
+        </div>
+        <div id="reviews">
+            {% for review in reviews %}
+            <div class="review_card">
+                <div>
+                    <img class="def_img" src="{% static 'images/default_img.jpg' %}" alt="">
+                </div>
+                <div class="info_review">
+                    <div class="heading_review">
+                        <h4>{{review.subject}}</h4>
+                    </div>
+                    <div class="rating_name">
+                        <div class="rating_outer_review">
+                            <div class="rating_stars">
+                                {% for i in '12345' %}
+                                    {% if i <= review.rating %}
+                                        <img class="star" src="{% static 'images/star.svg' %}" alt="">
+                                    {% else %}
+                                        <img  class="star" src="{% static 'images/star_empty.svg' %}" alt="">
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="name_review">
+                            <h4>{{review.user_by}}</h4>
+                        </div>
+                    </div>
+                    <div class="review_text">
+                        <p>{{review.review}}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            
+        </div>
+    </section>
+    
+    <footer>
+        <div id="left_footer">
+            <img src="{% static 'images/logo.svg' %}" alt="">
+            <br>
+            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Asperiores voluptate, dignissimos omnis tenetur officia error pariatur animi optio ab fugit vero veritatis? Quae dolor rem assumenda, unde, saepe in sapiente quo impedit accusantium laudantium nemo!</p>
+            <br>
+            <a href="" id="footer_mail">email@example.com</a>
+            <br>
+            <a href="contact" id="footer_contact_ud">Contact Us</a>
+        </div>
+        <div id="right_footer">
+            <div id="one_right">
+                <h4>Navigation</h4>
+                <a href="home">Home</a>
+                <a href="pricing">Pricing</a>
+                <a href="contact">Contact</a>
+                <a href="submitad">Add a Listing</a>
+                <a href="login">Sign in</a>
+                <a href="signup">Sign Up</a>
+            </div>
+            <div id="two_right">
+                <h4>Legal</h4>
+                <a href="privacy_policy">Privacy Policy</a>
+                <a href="terms_and_condition">Terms and condition</a>
+            </div>
+        </div>
+    </footer> 
+    <!-- Modal for user info -->
+    <div id="user_info_modal">
+        <div id="triangle"></div>
+        <div id="details_modal">
+            <p id="name_modal">Jayant Khanna</p>
+            <p id="email_modal">jayantkhanna3105@gmail.com</p>
+        </div>
+        <div id="options_modal">
+            <hr class="hr_options"  id="hr_option_1">
+            <a href="userdashboard" class="option">
+                <div>
+                    <p>Dashboard</p>
+                    <img src="{% static 'images/arrow.svg' %}" alt="">  
+                </div>
+            </a>
+            <hr class="hr_options">
+            <a href="usersettings" class="option">
+                <div>
+                    <p>Settings</p>
+                    <img src="{% static 'images/arrow.svg' %}" alt="">  
+                </div>
+            </a>
+            <hr class="hr_options">
+            <a href="logout" class="option">
+                <div>
+                    <p>Log out</p>
+                    <img src="{% static 'images/arrow.svg' %}" alt="">  
+                </div>
+            </a>
+            <hr class="hr_options">
+        </div>
+    </div>
+
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="home">Home</a>
+        <a href="contact">Contact</a>
+        <a href="pricing">Pricing</a>
+        <a href="submitad" id="submit_ad">Add a Listing</a>
+    </div>
+
+    <script>
+        function openNav() {
+          document.getElementById("mySidenav").style.width = "250px";
+        }
+        
+        function closeNav() {
+          document.getElementById("mySidenav").style.width = "0";
+        }
+    </script>
+	<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
+	<script src="{% static 'js/selectize.min.js' %}"></script>
+	<script src="{% static 'js/masonry.pkgd.min.js' %}"></script>
+	<script src="{% static 'js/icheck.min.js' %}"></script>
+	<script src="{% static 'js/jquery.validate.min.js' %}"></script>
+	<script src="{% static 'js/custom.js' %}"></script>
+    <script src="{% static 'js/index.js' %}"></script>
+    <script src="{% static 'js/userprofile.js' %}"></script>
+    <script src="{% static 'js/showlisting.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+#name_price{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 95px;
+    margin-right: 95px;
+    z-index: 9999;
+}
+#name_price_right p{
+    font-size: 40px;
+    font-weight: 600;
+    color: #F5E443;
+    margin: 0;
+}
+#main_image{
+    height: 550px;
+    width: 700px;
+}
+.image-gallery {
+    width: 500px;
+    margin: 0 auto;
+}
+  
+.header-image {
+    width: 100%;
+}
+  
+.small-images {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+  
+.small-images img {
+    width: 30%;
+    cursor: pointer;
+}
+#main_image{
+    border-radius: 6px;
+}
+.small_img{
+    margin-right: 15px;
+    border-radius: 6px;
+    width: 100px !important;
+    height: 100px !important;
+
+}
+#listing_details{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+}
+.outer_img{
+    cursor: pointer;
+    z-index: 9999;
+    position: relative;
+}
+.active::before{
+    background: none !important;
+}
+.outer_img::before {
+    content: "";
+    border-radius: 6px;
+    z-index: 99999;
+    background: rgba(237, 237, 237, 0.85);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 90%;
+    height: 100%;
+}
+.items:not(.selectize-input) {
+    margin-left: -7.5rem;
+}
+.items{
+    justify-content: center !important;
+}
+.item{
+    width: 35% !important;
+}
+
+#similar_ads_heading h2{
+    text-align: center;
+    margin-left: -80px;
+}
+#userdetails{
+    margin-bottom: 0 !important;
+}
+#details{
+    background-color: #ECECEC;
+    padding-left: 150px;
+    padding-right: 150px;
+    padding-top: 25px;
+    margin-top: 0!important;
+    margin-bottom: 0!important;
+    display: flex;
+    justify-content: space-between;
+}
+#heading_details h2{
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+#details_info{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 270px;
+}
+#headings_info p{
+    font-weight: 700;
+}
+#heading_description h2{
+    margin-top: 0;
+    padding-top: 0;
+}
+#features{
+    padding-left: 150px;
+    padding-right: 150px;
+    background-color: #ECECEC;
+}
+#heading_features h2{
+    margin-top: 0;
+}
+#features_info{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 520px;
+}
+
+.feature{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+.feature img{
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+.feature p{
+    font-size: 18px;
+}
+#contact_author{
+    margin-top: 50px;
+    margin-left: 95px;
+    margin-right: 95px;
+    background-color: #ECECEC;
+    border-radius: 6px;
+    padding: 15px 65px;
+}
+
+#info_main{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin-bottom: 50px;
+}
+#info_main div>img{
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+#rating_author_info img{
+    width: 25px !important;
+    margin-right: 0 !important;
+    height: 25px !important;
+}
+#contact_info{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+#phone_email p{
+    margin-right: 60px;
+    font-weight: 700;
+    font-size: 16px;
+}
+#phone_email_final p{
+    font-size: 16px;
+}
+#contact_author_info{
+    display: flex;
+    justify-content: space-between;
+}
+.author_contact_input{
+    width: 650px !important;
+}
+#heading_info_main h4{
+    font-size: 25px !important;
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+}
+#write_a_review{
+    background-color: #ECECEC;
+    padding: 25px;
+    margin-right: 95px;
+    border-radius: 6px;
+}

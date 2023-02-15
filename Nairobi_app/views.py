@@ -385,3 +385,21 @@ def new_review(request):
         return redirect(url)
     else:
         return redirect('home')
+
+def showlisting(request):
+    if "listing_id" in request.GET:
+        listingid = request.GET['listing_id']
+        listingid = int(listingid)
+        if Listing.objects.filter(id=listingid).exists():
+            listing = Listing.objects.get(id=listingid)
+            user = listing.user
+
+            similar_listing = Listing.objects.filter(user=user.id).exclude(id=listing.id)
+            similar_listing = similar_listing[0]
+            username = user.username.split(" ")[0].capitalize()
+            listingname = listing.name.capitalize()
+            return render(request, 'showlisting.html',{'user': user, 'username': username, 'listing': listing, 'listingname': listingname, 'similar_listing': similar_listing})
+        else:
+            return redirect('home')
+    else:
+        return redirect('home')

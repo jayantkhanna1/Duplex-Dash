@@ -25,6 +25,7 @@ urlpatterns = [
     path('userprofile', views.userprofile, name='userprofile'),
     path('userdashboard', views.userprofile, name='userprofile'),
     path('new_review', views.new_review, name='new_review'),
+    path('showlisting', views.showlisting, name='showlisting'),
 
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
