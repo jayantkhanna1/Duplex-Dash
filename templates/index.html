@@ -127,7 +127,7 @@
                                             
                                         </h3>
                                         <a href="showlisting?listing_id={{listing.id}}" class="image-wrapper background-image">
-                                            <img src="{% static 'images/image-01.jpg' %}" alt="">
+                                            <img src="{{listing.main_image.url}}" alt="">                                       
                                         </a>
                                     </div>
                                     <!--end image-->
@@ -140,7 +140,7 @@
                                             <i class="fa fa-calendar-o"></i>{{listing.date_added}}
                                         </figure>
                                         <figure>
-                                            <a href="user_details?id={{listing.user}}">
+                                            <a href="userprofile?userid={{listing.user.id}}">
                                                 <i class="fa fa-user"></i>{{listing.user_name}}
                                             </a>
                                         </figure>
@@ -159,51 +159,7 @@
                                 </div>
                             </div>
                             {% endfor %}
-                            <div class="item">
-                                <div id="featured"><img src="{% static 'images/featured_tag.svg' %}" alt=""></div>
-                                <div id="tag">Rent</div>
-                                <!--end ribbon-->
-                                <div class="wrapper">
-                                    <div class="image">
-                                        <h3>
-                                            <a href="#" class="tag category">Category Name</a>
-                                            <a href="showuser?user_id={{lisitng.user}}" class="title">Listing Name</a>
-                                            
-                                        </h3>
-                                        <a href="showlisting?listing_id={{lisitng.id}}l" class="image-wrapper background-image">
-                                            <img src="{% static 'images/image-01.jpg' %}" alt="">
-                                        </a>
-                                    </div>
-                                    <!--end image-->
-                                    <h4 class="location">
-                                        <a href="javascript:void(0)" style="text-decoration: none;">Dehradun,Uttarkhand</a>
-                                    </h4>
-                                    <div class="price">$80</div>
-                                    <div class="meta">
-                                        <figure>
-                                            <i class="fa fa-calendar-o"></i>31-05-02
-                                        </figure>
-                                        <figure>
-                                            <a href="user_details?">
-                                                <i class="fa fa-user"></i>Jayant Khanna
-                                            </a>
-                                        </figure>
-                                        <figure style="margin-right: 25px;">
-                                            <a href="javascript:void(0)" onclick="like('{{lisitng.id}}')">
-                                                <i style="cursor: pointer;" class="fa fa-2x fa-heart"></i>
-                                            </a>
-                                        </figure>
-                                    </div>
-                                    <!--end meta-->
-                                    <div class="description">
-                                        <p>lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae cumque est quam, ex beatae soluta blanditiis sunt quas suscipit corrupti. Minima alias officiis doloremque cumque perspiciatis illo fugit nisi mollitia.
-
-                                        </p>
-                                    </div>
-                                    <!--end description-->
-                                    <a href="showlisting?listing_id={{lisitng.id}}" class="detail text-caps underline">Details</a>
-                                </div>
-                            </div>
+                            
                         </div>
                         
                     </div>

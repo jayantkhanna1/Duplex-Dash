@@ -201,3 +201,50 @@
     margin-right: 95px;
     border-radius: 6px;
 }
+.toast {
+    position: fixed;
+    top: 25px;
+    right: 20px;
+    background-color: transparent;
+    transform: translateY(100%);
+    opacity: 0; 
+    z-index: 9999;
+    border-radius: 6px;
+    transition:
+        opacity 500ms,
+        transform 500ms;
+}
+
+.toast.visible {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.toast-body {
+    padding: 20px 24px;
+    font-size: larger;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;    
+    border-radius: 4px;
+}
+.toast-body-success{
+    background-color: #b7ffcb;
+    color: #119130;
+    border: 1px solid greenyellow;
+}
+.toast-body-error {
+    background-color: #ffd4d4;
+    color: #b80000;
+    border: 1px solid rgb(255, 0, 0);
+}
+#send_mail_submit{
+    padding: 16px 18px;
+    border-radius: 6px;
+    outline: none;
+    border: none;
+    background-color: #fffd54;
+    color: #1f1f1f;
+    font-weight: 600;
+    float: right;
+    cursor: pointer;
+    margin-top: 15px;
+}

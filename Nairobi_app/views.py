@@ -206,7 +206,7 @@ def submitad(request):
                         return redirect('packages')
                     else:
                         return render(request, 'submitad.html')
-                return redirect('packages')
+                return render(request, 'submitad.html')
         else:
             return redirect('login')
     else:
@@ -398,8 +398,57 @@ def showlisting(request):
             similar_listing = similar_listing[0]
             username = user.username.split(" ")[0].capitalize()
             listingname = listing.name.capitalize()
-            return render(request, 'showlisting.html',{'user': user, 'username': username, 'listing': listing, 'listingname': listingname, 'similar_listing': similar_listing})
+            reviews = ListingReviews.objects.filter(listing=listing)
+            return render(request, 'showlisting.html',{'user': user, 'username': username, 'listing': listing, 'listingname': listingname, 'similar_listing': similar_listing, 'reviews': reviews})
         else:
             return redirect('home')
     else:
         return redirect('home')
+
+def new_review_listing(request):
+    name = request.POST["name"]
+    subject = request.POST["subject"]
+    rating = request.POST["rating_to_be_sent_back"]
+    review = request.POST["review"]
+    listing = request.POST["listing"]
+    if Listing.objects.filter(id=listing).exists():
+        listing = Listing.objects.get(id=listing)
+        review = ListingReviews.objects.create(listing=listing, user=name, subject=subject, rating=rating, review=review)
+        review.save()
+        # Updating listing rating
+        listing_rating = ListingReviews.objects.filter(listing=listing)
+        total_rating = 0
+        for rating in listing_rating:
+            total_rating = total_rating + int(rating.rating)
+        listing.rating = total_rating / len(listing_rating)
+        listing.save()
+        url = "/showlisting?listing_id="+str(listing.id)
+        return redirect(url)
+    else:
+        return redirect('home')
+
+def send_mail_to_seller(request):
+    name = request.POST["name"]
+    email = request.POST["email"]
+    message = request.POST["message"]
+    listingid = request.POST["listingid"]
+    sender = os.getenv('EMAIL')
+    if Listing.objects.filter(id=listingid).exists():
+        listing = Listing.objects.get(id=listingid)
+        user = listing.user
+        if User.objects.filter(id=user.id).exists():
+            user = User.objects.get(id=user.id)
+            reciever = [user.email]
+            message = "Name : " + name + "\nEmail : " + email + "\nMessage : " + message
+            send_mail("Hey there you have a new enquiry for your listing at The Nairobi Listing",message,sender,recipient_list=reciever)
+            url = "/showlisting?listing_id="+str(listing.id)
+            messages.info(request, 'done')
+            return redirect(url)
+        else:
+            url = "/showlisting?listing_id="+str(listing.id)
+            messages.info(request, 'error')
+            return redirect(url)
+    else:
+        url = "/showlisting?listing_id="+str(listing.id)
+        messages.info(request, 'error')
+        return redirect(url)

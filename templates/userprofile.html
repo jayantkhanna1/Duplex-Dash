@@ -124,7 +124,7 @@
                      <a href="showuser?user_id={{lisitng.user}}" class="title">{{listing.name}}</a>
                   </h3>
                   <a href="showlisting?listing_id={{listing.id}}" class="image-wrapper background-image">
-                  <img src="{% static 'images/image-01.jpg' %}" alt="">
+                  <img src="{{listing.main_image.url}}" alt="">
                   </a>
                </div>
                <!--end image-->

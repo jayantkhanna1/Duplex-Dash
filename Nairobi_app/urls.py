@@ -26,6 +26,8 @@ urlpatterns = [
     path('userdashboard', views.userprofile, name='userprofile'),
     path('new_review', views.new_review, name='new_review'),
     path('showlisting', views.showlisting, name='showlisting'),
+    path('new_review_listing', views.new_review_listing, name='new_review_listing'),
+    path('send_mail_to_seller', views.send_mail_to_seller, name='send_mail_to_seller'),
 
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

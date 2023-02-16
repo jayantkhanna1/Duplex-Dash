@@ -208,19 +208,19 @@
         </div>
         <div id="features_info">
             <div>
-                {% if listing.feature1 != '' %}
+                {% if listing.feature1 != None %}
                 <div class="feature">
                     <img src="{% static 'images/feature.svg' %}" alt="">
                     <p>{{listing.feature1}}</p>
                 </div>
                 {% endif %} 
-                {% if listing.feature3 != '' %}
+                {% if listing.feature3 != None %}
                 <div class="feature">
                     <img src="{% static 'images/feature.svg' %}" alt="">
                     <p>{{listing.feature3}}</p>
                 </div>
                 {% endif %}
-                {% if listing.feature5 != '' %}
+                {% if listing.feature5 != None %}
                 <div class="feature">
                     <img src="{% static 'images/feature.svg' %}" alt="">
                     <p>{{listing.feature5}}</p>
@@ -229,19 +229,19 @@
             </div>
             
             <div>
-                {% if listing.feature2 != '' %}
+                {% if listing.feature2 != None %}
                 <div class="feature">
                     <img src="{% static 'images/feature.svg' %}" alt="">
                     <p>{{listing.feature2}}</p>
                 </div>
                 {% endif %}
-                {% if listing.feature4 != '' %}
+                {% if listing.feature4 != None %}
                 <div class="feature">
                     <img src="{% static 'images/feature.svg' %}" alt="">
                     <p>{{listing.feature4}}</p>
                 </div>
                 {% endif %}
-                {% if listing.feature6 != '' %}
+                {% if listing.feature6 != None %}
                 <div class="feature">
                     <img src="{% static 'images/feature.svg' %}" alt="">
                     <p>{{listing.feature6}}</p>
@@ -288,19 +288,24 @@
             </div>
             <div id="form_contact_author">
                 <h2>Get in Touch: </h2>
-                <form action="">
+                <form action="send_mail_to_seller" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
                     <div>
                         <h4>Name</h4>
-                        <input class="author_contact_input" type="text">
+                        <input name="name" class="author_contact_input" type="text" required>
                     </div>
                     <div>
                         <h4>Email</h4>
-                        <input class="author_contact_input" type="email">
+                        <input name="email" class="author_contact_input" type="email" required>
                     </div>
                     <div>
                         <h4>Message</h4>
-                        <textarea class="author_contact_input" name="" id="" cols="30" rows="10"></textarea>
+                        <textarea required name="message" class="author_contact_input" name="" id="" cols="30" rows="10"></textarea>
                     </div>
+                    <div>
+                        <input id="send_mail_submit" type="submit" value="Send Message">
+                    </div>
+                    <input type="hidden" name="listingid" value="{{listing.id}}">
                 </form>
             </div>
         </div>
@@ -318,11 +323,11 @@
                 <div id="rating_subject">
                     <div>
                         <h4>Your Name</h4>
-                        <input id="username" type="text" name="name">
+                        <input id="username" type="text" name="name" required>
                     </div>
                     <div>
                         <h4>Subject</h4>
-                        <input id="subject" type="text" name="subject">
+                        <input id="subject" type="text" name="subject" required>
                     </div>
                     <div id="rating_outer">
                         <h4>Rating</h4>
@@ -337,9 +342,9 @@
                 </div>
                 <div id="review">
                     <h4>Review</h4>
-                    <textarea name="review" id="" cols="30" rows="10"></textarea>
+                    <textarea required name="review" id="" cols="30" rows="10"></textarea>
                 </div>
-                <input type="hidden" name="rating_to_be_sent_back" id="rating_to_be_sent_back">
+                <input value="0" type="hidden" name="rating_to_be_sent_back" id="rating_to_be_sent_back">
                 <div id="submit">
                     <input type="submit" value="Submit">
                 </div>
@@ -374,7 +379,7 @@
                             </div>
                         </div>
                         <div class="name_review">
-                            <h4>{{review.user_by}}</h4>
+                            <h4>{{review.user}}</h4>
                         </div>
                     </div>
                     <div class="review_text">
@@ -414,6 +419,12 @@
             </div>
         </div>
     </footer> 
+    
+    <div class="toast" id="toast">
+        <div class="toast-body">
+        </div>
+    </div>
+
     <!-- Modal for user info -->
     <div id="user_info_modal">
         <div id="triangle"></div>
@@ -464,6 +475,36 @@
           document.getElementById("mySidenav").style.width = "0";
         }
     </script>
+    <input id="hidden_toast" value="off" style="display: none;" readonly type="hidden">
+    <script>
+        const toast = document.getElementById('toast');
+       
+        '{% for message in messages %}'
+        if('{{message}}' == 'done'){
+            toast.classList.add('visible');
+            toast.querySelector('.toast-body').innerHTML = "Mail sent successfully !";
+            toast.classList.add('toast-body-success');
+            document.getElementById("hidden_toast").value = "on"
+        }           
+            if('{{message}}' == 'error'){
+                toast.classList.add('visible');
+                toast.querySelector('.toast-body').innerHTML = "Error sending mail !";
+                toast.classList.add('toast-body-error');
+                document.getElementById("hidden_toast").value = "on"
+            }
+            '{% endfor %}'
+        
+        if(document.getElementById("hidden_toast").value == "on"){
+            setTimeout(remove_toast,4000)
+            
+        }
+        function remove_toast(){
+            const toast = document.getElementById('toast');
+            toast.classList.remove('visible');
+            document.getElementById("hidden_toast").value = "off"
+        }
+    </script>
+    
 	<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
