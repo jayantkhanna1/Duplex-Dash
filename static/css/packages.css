@@ -19,6 +19,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
     margin-top: 50px;
 }
 .card{
@@ -69,4 +70,9 @@
 .buy_now a:hover{
     color: rgb(61, 61, 61);
     background-color: #FEF200;
+}
+@media screen and (max-width: 900px) {
+    .card{
+        margin-bottom: 25px;
+    }
 }

@@ -44,7 +44,7 @@
         <div id="left_header">
             <img src="{%static 'images/logo.svg' %}" alt="logo">
         </div>
-        <div id="right_header">
+        <div id="header_top_mobile">
             <span id="menu" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
         </div>
     </header>
@@ -74,11 +74,11 @@
             <div id="title_price">
                 <div id="title_outer">
                     <h5>Title* :</h5>
-                    <input required placeholder="Title of Listing" name="title" type="text">
+                    <input required placeholder="Title of Listing" name="title" id="title_of_listing" type="text">
                 </div>
                 <div id="price_outer">
-                    <h5>Price :</h5>
-                    <input required name="price" placeholder="$100 " type="number">
+                    <h5>Price* :</h5>
+                    <input required name="price" placeholder="$100 " id="price_of_listing" type="number">
                 </div>
             </div>
             <div id="description">
@@ -152,6 +152,15 @@
             <input type="submit" value="Submit" id="submit_ad_button">
         </form>
     </section>
+
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="home">Home</a>
+        <a href="contact">Contact</a>
+        <a href="pricing">Pricing</a>
+        <a href="submitad" id="submit_ad">Add a Listing</a>
+    </div>
+
     <script>
         var feat_num = 1;
         function addFeature(){
@@ -185,6 +194,15 @@
                 var add_feature = document.getElementById("add_feature");
                 add_feature.style.display = "none";
             }
+        }
+    </script>
+    <script>
+        function openNav() {
+          document.getElementById("mySidenav").style.width = "250px";
+        }
+        
+        function closeNav() {
+          document.getElementById("mySidenav").style.width = "0";
         }
     </script>
     <script src="{% static 'js/submit_ad.js' %}"></script>

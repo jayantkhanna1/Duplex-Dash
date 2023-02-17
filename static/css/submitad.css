@@ -219,3 +219,116 @@ h5{
     margin-left: 151px;
     margin-right: 306px;
 }
+@media screen and (max-width: 900px) {
+    #computer_header{
+        display: none;
+    }
+    #header_mobile{
+        padding-top: 15px;
+        display: flex;
+        align-items: center;
+        background-color: #E2E2E2;
+        padding-bottom: 15px;
+        justify-content: space-between;
+    }
+    #left_header img{
+        margin-left: 10px;
+    }
+    #type{
+        width:auto;
+    }
+    #title_price{
+        flex-wrap: wrap;
+    }
+    #title_outer,#price_outer{
+        
+        margin-right: 0 !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+    }
+    #title_of_listing,#price_of_listing{
+        width: 285px;
+    }
+    h5{
+        margin-top: 35px;
+        margin-bottom: 0;
+    }
+    #description textarea{
+        width: 75%;
+    }
+    #description {
+        margin-left: 0 !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #address_heading {
+        display: flex;
+        margin-left: 0 !important;
+        justify-content: center;
+    }
+    #address{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        width: auto;
+    }
+    #address_outer{
+        flex-wrap: wrap;
+    }
+    #address_outer select{
+        margin-bottom: 25px;
+    }
+    #category{
+        margin-right: 0 !important;
+    }
+    #features{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+    #features h5 {
+        margin-left: 0;
+    }
+    .feature_input{
+        margin-left: 0;
+        width: 285px !important;
+    }
+    #add_feature{
+        margin-left: 85px;
+        width: 235px !important;
+    }
+    #gallery_heading {
+        margin-left: 155px;
+        margin-bottom: 25px;
+    }
+    #gallery {
+        margin-left: 42px;
+        width: 348px !important;
+    }
+    .drop-zone{
+        margin-right: 40px ;
+    }
+    #location_div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    #location{
+        width: 285px;
+    }
+    #submit_ad_button{
+        margin-left: 50px;
+        margin-bottom: 70px;
+        margin-top: 40px;
+        width: 300px;
+    }
+}

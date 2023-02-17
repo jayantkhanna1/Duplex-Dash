@@ -477,4 +477,8 @@ figure{
         font-size: 17px;
         font-weight: 100;
     }
+    #submit_ad {
+        margin-left: 12px;
+        margin-right: 87px;
+    }
 }
