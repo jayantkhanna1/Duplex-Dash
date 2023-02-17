@@ -127,12 +127,12 @@
                                     
                                 </h3>
                                 <a href="showlisting?listing_id={{similar_listing.id}}" class="image-wrapper background-image">
-                                    <img src="{% static 'images/image-01.jpg' %}" alt="">
+                                    <img src="{{similar_listing.main_image.url}}" alt="">
                                 </a>
                             </div>
                             <!--end image-->
                             <h4 class="location">
-                                <a href="javascript:void(0)" style="text-decoration: none;">{{similar_listing.state}},{{similar_listing.state}}</a>
+                                <a href="javascript:void(0)" style="text-decoration: none;">{{similar_listing.city}},{{similar_listing.state}}</a>
                             </h4>
                             <div class="price">${{similar_listing.price}}</div>
                             <div class="meta">
@@ -187,7 +187,7 @@
                 <div>
                     <p>{{listing.date_added}}</p>
                     <p>{{listing.category}}</p>
-                    <p>{{listing.state}}, {{listing.city}}</p>
+                    <p>{{listing.city}}, {{listing.state}}</p>
                     <div>
                         {% for i in '12345' %}
                             {% if i <= listing.rating %}
@@ -251,6 +251,18 @@
         </div>
     </section>
 
+    {% if listing.google_map_link != None %}
+    <section id="map" style="margin-left: 95px; margin-right: 95px;">
+        <div id="heading_map">
+            <h2>Map</h2>
+        </div>
+        <div id="map_info">
+            <iframe src="{{listing.google_map_link}}" width="100%" height="600" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+    </section>
+    {% endif %}
+
+    
     <section id="contact_author">
         <div id="contact_author_heading">
             <h2>Author</h2>

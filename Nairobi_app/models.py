@@ -57,7 +57,7 @@ class Listing(models.Model):
     feature6 = models.CharField(max_length=100,blank=True,null=True)
     rating = models.CharField(max_length=100,default="1")
     video_360_link = models.CharField(max_length=1000,blank=True,null=True)
-    google_map_link = models.CharField(max_length=1000,blank=True,null=True)
+    google_map_link = models.CharField(max_length=10000,blank=True,null=True)
 
 
 class UserReviews(models.Model):

@@ -301,7 +301,13 @@ def newlisting(request):
         image5 = request.FILES['image6']
     else:
         image5 = None
-
+    if 'location' in request.POST:
+        location = request.POST['location']
+        location = location.split("src=")[1]
+        location = location.split(" width")[0]
+        location = location.replace('"', '') 
+    else:
+        location = None
     usertoken  = request.session['TheNairobiPrivateToken']
     user = User.objects.get(private_token=usertoken)
     userpackage = user.package
@@ -317,7 +323,7 @@ def newlisting(request):
     user.save()
 
     # Creating Listing
-    listing = Listing.objects.create(user=user, user_name=user_name, tag=tag, name=title, description=description, price=price, city=city, state=state, country=country, category=category, feature1=feature1, feature2=feature2, feature3=feature3, feature4=feature4, feature5=feature5, feature6=feature6, mainImage=mainImage, image1=image1, image2=image2, image3=image3, image4=image4, image5=image5, featured=featured)
+    listing = Listing.objects.create(user=user, user_name=user_name, tag=tag, name=title, description=description, price=price, city=city, state=state, country=country, category=category, feature1=feature1, feature2=feature2, feature3=feature3, feature4=feature4, feature5=feature5, feature6=feature6, main_image=mainImage, image1=image1, image2=image2, image3=image3, image4=image4, image5=image5, featured=featured,google_map_link = location)
     listing.save()
     url = "/userprofile?userid="+str(user.id)
     return redirect(url)

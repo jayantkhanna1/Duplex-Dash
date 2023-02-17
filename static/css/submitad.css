@@ -103,7 +103,7 @@ h5{
     margin-bottom: 25px;
 }
 #gallery_heading{
-    margin-left: 95px;
+    margin-left: 105px;
 }
 #add_feature{
     margin-left: 100px;
@@ -214,4 +214,8 @@ h5{
     font-weight: 600;
     outline: none;
     border: none;
+}
+#location_div {
+    margin-left: 151px;
+    margin-right: 306px;
 }

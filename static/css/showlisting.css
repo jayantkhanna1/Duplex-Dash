@@ -77,7 +77,8 @@
     justify-content: center !important;
 }
 .item{
-    width: 35% !important;
+    width: 380px !important;
+    /* 380 */
 }
 
 #similar_ads_heading h2{
