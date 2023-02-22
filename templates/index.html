@@ -77,20 +77,23 @@
                         <form action="search_listing" method="GET">
                             <div id="what">
                                 <label class="label_header" for="what-input">What?</label>
-                                <input id="what-input" name="what" type="text" placeholder="What are you looking for?">
+                                <input id="what-input" name="what" type="text" required placeholder="What are you looking for?">
                             </div>
                             <div id="where">
                                 <label class="label_header" for="where-input">Where?</label>
-                                <input type="text" id="where-input" name="where" placeholder="What are you looking for?">
+                                <input type="text" id="where-input" name="where" required placeholder="What are you looking for?">
                             </div>
                             <div id="category">
                                 <label class="label_header" id="category_label" for="">Category?</label>
-                                <select name="category" id="category-input">
+                                <select required name="category" id="category-input">
                                     <option value="">Select a Category</option>
-                                    {% for x in category%}
-                                    <option value="{{category}}">{{category}}</option>
-                                    <option value="{{category}}">{{category}}</option>
-                                    {% endfor %}
+                                    <option value="Real Estate">Real Estate</option>
+                                    <option value="Restaurant">Restaurant</option>
+                                    <option value="Hotel">Hotel</option>
+                                    <option value="Event">Event</option>
+                                    <option value="Land">Land</option>
+                                    <option value="Commercial Building">Commercial Building</option>
+                                    <option value="Airbnb">Airbnb</option>
                                 </select>
                             </div>
                             <div id="submit">
@@ -123,7 +126,7 @@
                                     <div class="image">
                                         <h3>
                                             <a href="#" class="tag category">{{listing.category_name}}</a>
-                                            <a href="showuser?user_id={{lisitng.user}}" class="title">{{listing.name}}</a>
+                                            <a href="showuser?user_id={{listing.user}}" class="title">{{listing.name}}</a>
                                             
                                         </h3>
                                         <a href="showlisting?listing_id={{listing.id}}" class="image-wrapper background-image">
@@ -145,7 +148,7 @@
                                             </a>
                                         </figure>
                                         <figure style="margin-right: 25px;">
-                                            <a href="javascript:void(0)" onclick="like('{{lisitng.id}}')">
+                                            <a href="javascript:void(0)" onclick="like('{{listing.id}}')">
                                                 <i style="cursor: pointer;" class="fa fa-2x fa-heart"></i>
                                             </a>
                                         </figure>
@@ -155,7 +158,7 @@
                                         <p>{{listing.description}}</p>
                                     </div>
                                     <!--end description-->
-                                    <a href="showlisting?listing_id={{lisitng.id}}" class="detail text-caps underline">Detail</a>
+                                    <a href="showlisting?listing_id={{listing.id}}" class="detail text-caps underline">Detail</a>
                                 </div>
                             </div>
                             {% endfor %}

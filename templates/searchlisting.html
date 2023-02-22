@@ -1,0 +1,199 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Meta -->
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="ThemeStarz">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Internal CSS -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/selectize.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/user_profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/showlisting.css' %}">
+    <link rel="stylesheet" href="{% static 'css/search.css' %}">
+
+    <!-- Title -->
+	<title>The Nairobi Listing</title>
+
+    <!-- Logo in  -->
+    <link rel="icon" type="image/png" href="../static/images/logo.svg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        header {
+            background: none !important;
+            height: 106px !important;
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <div id="header_top">
+            <div id="header_left">
+                <div id="left_signin">
+                    <img src="{% static 'images/logo.svg' %}" alt="" id="logo">
+                </div>  
+            </div>
+            <div id="header_right">
+                <a href="home">Home</a>
+                <a href="usersettings?userid={{user.id}}">Settings</a>
+                <!-- <a href="logout">Logout</a> -->
+                <a href="submitad" id="submit_ad">Add a Listing</a>
+            </div>
+        </div>
+
+        <!-- Mobile Header -->
+        <!-- Header Mobile View -->
+    <header id="header_mobile">
+        <div id="left_header">
+            <img src="{%static 'images/logo.svg' %}" alt="logo">
+        </div>
+        <div id="header_top_mobile">
+            <span id="menu" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+        </div>
+    </header>
+    </header>
+
+    <h2 id="heading_listing">Listings </h2>
+    <div id="options">
+        <a id="card" href="javascript:void(0)" onclick="change_view_card()" class="active"><i style="cursor: pointer;" class="fa fa-x fa-vcard"></i></a>
+        <a id="list" href="javascript:void(0)" onclick="change_view_list()"><i style="cursor: pointer;" class="fa fa-x fa-list"></i></a>
+    </div>
+
+    <section id="listing" class="card_view">
+        <div class="items item-part masonry grid-xl-4-items grid-lg-3-items grid-md-2-items">
+            {% for listing in listings %}
+            <div class="item">
+                {% if listing.featured == True %}
+                <div id="featured"><img src="{% static 'images/featured_tag.svg' %}" alt=""></div>
+                {% endif %}
+                <div id="tag">{{listing.tag}}</div>
+                <!--end ribbon-->
+                <div class="wrapper">
+                    <div class="image">
+                        <h3>
+                            <a href="#" class="tag category">{{listing.category}}</a>
+                            <a href="showuser?user_id={{listing.user}}" class="title">{{listing.name}}</a>
+                            
+                        </h3>
+                        <a href="showlisting?listing_id={{listing.id}}" class="image-wrapper background-image">
+                            <img src="{{listing.main_image.url}}" alt="">                                       
+                        </a>
+                    </div>
+                    <!--end image-->
+                    <h4 class="location">
+                        <a href="javascript:void(0)" style="text-decoration: none;">{{listing.city}},{{listing.state}}</a>
+                    </h4>
+                    <div class="price">${{listing.price}}</div>
+                    <div class="meta">
+                        <figure>
+                            <i class="fa fa-calendar-o"></i>{{listing.date_added}}
+                        </figure>
+                        <figure>
+                            <a href="userprofile?userid={{listing.user.id}}">
+                                <i class="fa fa-user"></i>{{listing.user_name}}
+                            </a>
+                        </figure>
+                        <figure style="margin-right: 25px;">
+                            <a href="javascript:void(0)" onclick="like('{{listing.id}}')">
+                                <i style="cursor: pointer;" class="fa fa-2x fa-heart"></i>
+                            </a>
+                        </figure>
+                    </div>
+                    <!--end meta-->
+                    <div class="description">
+                        <p>{{listing.description}}</p>
+                    </div>
+                    <!--end description-->
+                    <a href="showlisting?listing_id={{listing.id}}" class="detail text-caps underline">Detail</a>
+                </div>
+            </div>
+            {% endfor %}
+            
+        </div>
+    </section>
+
+    <section id="listing_list_view">
+        {%for listing in listings%}
+        <div class="card_list">
+            {% if listing.featured == True %}
+                <div class="featured_list"><img src="{% static 'images/featured_tag.svg' %}" alt=""></div>
+            {% endif %}
+            <div class="img_list">
+                <img class="img_img_list" src="{{listing.main_image.url}}" alt="">
+                <p class="category_list">{{listing.category}}</p>
+                <p class="tag_list">{{listing.tag}}</p>
+                <p class="price_list">${{listing.price}}</p>
+            </div>
+            <div class="details">
+                <!-- name,location,featured tag, date added, user, details button, description -->
+                <div class="name_date_list">
+                    <p class="name_list">{{listing.name}}</p>
+                    <p class="date_list">{{listing.date_added}}</p>
+                </div>
+                <div class="location_user">
+                    <p class="location_list">{{listing.city}}, {{listing.state}}</p>
+                    <a href="userprofile?userid={{listing.user.id}}"><p class="user_list">{{listing.user_name}}</p></a>
+                </div>
+                <div class="description_list">
+                    <p>{{listing.description}}</p>
+                </div>
+                <div class="details_list">
+                    <a href="showlisting?listing_id={{listing.id}}" class="detail_list">Details</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+
+
+    <footer>
+        <div id="left_footer">
+            <img src="{% static 'images/logo.svg' %}" alt="">
+            <br>
+            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Asperiores voluptate, dignissimos omnis tenetur officia error pariatur animi optio ab fugit vero veritatis? Quae dolor rem assumenda, unde, saepe in sapiente quo impedit accusantium laudantium nemo!</p>
+            <br>
+            <a href="" id="footer_mail">email@example.com</a>
+            <br>
+            <a href="contact" id="footer_contact_ud">Contact Us</a>
+        </div>
+        <div id="right_footer">
+            <div id="one_right">
+                <h4>Navigation</h4>
+                <a href="home">Home</a>
+                <a href="pricing">Pricing</a>
+                <a href="contact">Contact</a>
+                <a href="submitad">Add a Listing</a>
+                <a href="login">Sign in</a>
+                <a href="signup">Sign Up</a>
+            </div>
+            <div id="two_right">
+                <h4>Legal</h4>
+                <a href="privacy_policy">Privacy Policy</a>
+                <a href="terms_and_condition">Terms and condition</a>
+            </div>
+        </div>
+    </footer> 
+
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58&libraries=places"></script>
+	<script src="{% static 'js/selectize.min.js' %}"></script>
+	<script src="{% static 'js/masonry.pkgd.min.js' %}"></script>
+	<script src="{% static 'js/icheck.min.js' %}"></script>
+	<script src="{% static 'js/jquery.validate.min.js' %}"></script>
+	<script src="{% static 'js/custom.js' %}"></script>
+    <script src="{% static 'js/index.js' %}"></script>
+    <script src="{% static 'js/userprofile.js' %}"></script>
+    <script src="{% static 'js/showlisting.js' %}"></script>
+    <script src="{% static 'js/search.js' %}"></script>
+</body>
+</html>

@@ -511,3 +511,14 @@ def delete_listing(request):
             return redirect('home')
     else:
         return redirect('home')
+
+def search_listing(request):
+    where = request.GET['where']
+    what = request.GET['what']
+    category = request.GET['category']
+    listings = Listing.objects.filter(category__icontains=category)
+    listings = listings | Listing.objects.filter(state__icontains=where)
+    listings = listings | Listing.objects.filter(city__icontains=where)
+    listings = listings | Listing.objects.filter(name__icontains=what)
+    listings = listings | Listing.objects.filter(country__icontains=where)
+    return render(request, 'searchlisting.html', {'listings': listings})
