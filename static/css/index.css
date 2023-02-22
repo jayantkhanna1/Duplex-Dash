@@ -2,6 +2,9 @@
 body{
     background-color: white !important;
 }
+#header_mobile{
+    display: none;
+}
 #sign_up_in{
     background-color: rgb(3, 1, 2, 56%);
     display: flex;
@@ -480,5 +483,8 @@ figure{
     #submit_ad {
         margin-left: 12px;
         margin-right: 87px;
+    }
+    .image-wrapper img{
+        width: 100%;
     }
 }

@@ -49,9 +49,15 @@
         </div>
 
         <!-- Mobile Header -->
+        <!-- Header Mobile View -->
+    <header id="header_mobile">
+        <div id="left_header">
+            <img src="{%static 'images/logo.svg' %}" alt="logo">
+        </div>
         <div id="header_top_mobile">
             <span id="menu" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
         </div>
+    </header>
     </header>
 
     <section id="name_price">
@@ -251,117 +257,123 @@
         </div>
     </section>
 
+    
     {% if listing.google_map_link != None %}
-    <section id="map" style="margin-left: 95px; margin-right: 95px;">
-        <div id="heading_map">
-            <h2>Map</h2>
-        </div>
-        <div id="map_info">
-            <iframe src="{{listing.google_map_link}}" width="100%" height="600" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-        </div>
+    <section id="map_outer">
+        <section id="map" style="margin-left: 95px; margin-right: 95px;">
+            <div id="heading_map">
+                <h2>Map</h2>
+            </div>
+            <div id="map_info">
+                <iframe src="{{listing.google_map_link}}" width="100%" height="600" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </section>
     </section>
     {% endif %}
 
-    
-    <section id="contact_author">
-        <div id="contact_author_heading">
-            <h2>Author</h2>
-        </div>
-        <div id="contact_author_info">
-            <div>
-                <div id="info_main">
-                    <div>
-                        <img src="{{user.image.url}}" alt="">
+    <section id="contact_author_outer"> 
+        <section id="contact_author">
+            <div id="contact_author_heading">
+                <h2>Author</h2>
+            </div>
+            <div id="contact_author_info">
+                <div>
+                    <div id="info_main">
+                        <div>
+                            <img src="{{user.image.url}}" alt="">
+                        </div>
+                        <div id="heading_info_main">
+                            <h4>{{username}}</h4>
+                            <!-- Rating -->
+                            <div id="rating_author_info">
+                                {% for i in '12345' %}
+                                    {% if i <= user.rating %}
+                                        <img class="star" src="{% static 'images/star.svg' %}" alt="">
+                                    {% else %}
+                                        <img  class="star" src="{% static 'images/star_empty.svg' %}" alt="">
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
                     </div>
-                    <div id="heading_info_main">
-                        <h4>{{username}}</h4>
-                        <!-- Rating -->
-                        <div id="rating_author_info">
-                            {% for i in '12345' %}
-                                {% if i <= user.rating %}
-                                    <img class="star" src="{% static 'images/star.svg' %}" alt="">
-                                {% else %}
-                                    <img  class="star" src="{% static 'images/star_empty.svg' %}" alt="">
-                                {% endif %}
-                            {% endfor %}
+                    <div id="contact_info">
+                        <div id="phone_email">
+                            <p>Phone : </p>
+                            <p>Email : </p>
+                        </div>
+                        <div id="phone_email_final">
+                            <p>{{user.phone}}</p>
+                            <p>{{user.email}}</p>
                         </div>
                     </div>
                 </div>
-                <div id="contact_info">
-                    <div id="phone_email">
-                        <p>Phone : </p>
-                        <p>Email : </p>
-                    </div>
-                    <div id="phone_email_final">
-                        <p>{{user.phone}}</p>
-                        <p>{{user.email}}</p>
-                    </div>
+                <div id="form_contact_author">
+                    <h2>Get in Touch: </h2>
+                    <form action="send_mail_to_seller" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div>
+                            <h4>Name</h4>
+                            <input name="name" class="author_contact_input" type="text" required>
+                        </div>
+                        <div>
+                            <h4>Email</h4>
+                            <input name="email" class="author_contact_input" type="email" required>
+                        </div>
+                        <div>
+                            <h4>Message</h4>
+                            <textarea required name="message" class="author_contact_input" name="" id="" cols="30" rows="10"></textarea>
+                        </div>
+                        <div>
+                            <input id="send_mail_submit" type="submit" value="Send Message">
+                        </div>
+                        <input type="hidden" name="listingid" value="{{listing.id}}">
+                    </form>
                 </div>
             </div>
-            <div id="form_contact_author">
-                <h2>Get in Touch: </h2>
-                <form action="send_mail_to_seller" method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div>
-                        <h4>Name</h4>
-                        <input name="name" class="author_contact_input" type="text" required>
-                    </div>
-                    <div>
-                        <h4>Email</h4>
-                        <input name="email" class="author_contact_input" type="email" required>
-                    </div>
-                    <div>
-                        <h4>Message</h4>
-                        <textarea required name="message" class="author_contact_input" name="" id="" cols="30" rows="10"></textarea>
-                    </div>
-                    <div>
-                        <input id="send_mail_submit" type="submit" value="Send Message">
-                    </div>
-                    <input type="hidden" name="listingid" value="{{listing.id}}">
-                </form>
-            </div>
-        </div>
+        </section>  
     </section>
 
-    <section id="write_a_review">
-        <div id="write_a_review_left">
-            <h2>Write a Review</h2>
-        </div>
-        <div id="write_a_review_right">
-            <form action="new_review_listing" method="POST" enctype="multipart/form-data" onsubmit="return getRating()">
-                {% csrf_token %}
-                <input type="hidden" name="listing" value="{{listing.id}}">
-                
-                <div id="rating_subject">
-                    <div>
-                        <h4>Your Name</h4>
-                        <input id="username" type="text" name="name" required>
-                    </div>
-                    <div>
-                        <h4>Subject</h4>
-                        <input id="subject" type="text" name="subject" required>
-                    </div>
-                    <div id="rating_outer">
-                        <h4>Rating</h4>
-                        <div class="stars" id="rating_stars">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
+    <section id="review_outer">
+        <section id="write_a_review">
+            <div id="write_a_review_left">
+                <h2>Write a Review</h2>
+            </div>
+            <div id="write_a_review_right">
+                <form action="new_review_listing" method="POST" enctype="multipart/form-data" onsubmit="return getRating()">
+                    {% csrf_token %}
+                    <input type="hidden" name="listing" value="{{listing.id}}">
+                    
+                    <div id="rating_subject">
+                        <div>
+                            <h4>Your Name</h4>
+                            <input id="username" type="text" name="name" required>
+                        </div>
+                        <div>
+                            <h4>Subject</h4>
+                            <input id="subject" type="text" name="subject" required>
+                        </div>
+                        <div id="rating_outer">
+                            <h4>Rating</h4>
+                            <div class="stars" id="rating_stars">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div id="review">
-                    <h4>Review</h4>
-                    <textarea required name="review" id="" cols="30" rows="10"></textarea>
-                </div>
-                <input value="0" type="hidden" name="rating_to_be_sent_back" id="rating_to_be_sent_back">
-                <div id="submit">
-                    <input type="submit" value="Submit">
-                </div>
-            </form>
-        </div>
+                    <div id="review">
+                        <h4>Review</h4>
+                        <textarea required name="review" id="" cols="30" rows="10"></textarea>
+                    </div>
+                    <input value="0" type="hidden" name="rating_to_be_sent_back" id="rating_to_be_sent_back">
+                    <div id="submit">
+                        <input type="submit" value="Submit">
+                    </div>
+                </form>
+            </div>
+        </section>
     </section>
 
     <section id="review_by_users">

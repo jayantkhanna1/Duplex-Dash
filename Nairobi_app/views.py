@@ -303,9 +303,10 @@ def newlisting(request):
         image5 = None
     if 'location' in request.POST:
         location = request.POST['location']
-        location = location.split("src=")[1]
-        location = location.split(" width")[0]
-        location = location.replace('"', '') 
+        if location != "":
+            location = location.split("src=")[1]
+            location = location.split(" width")[0]
+            location = location.replace('"', '') 
     else:
         location = None
     usertoken  = request.session['TheNairobiPrivateToken']
@@ -360,10 +361,19 @@ def userprofile(request):
         userid = request.GET['userid']
         if User.objects.filter(id=userid).exists():
             user = User.objects.get(id=userid)
+            logged_in_user = None
+            if "TheNairobiPrivateToken" in request.session:
+                usertoken = request.session['TheNairobiPrivateToken']
+                if User.objects.filter(private_token=usertoken).exists():
+                    logged_in_user = User.objects.get(private_token=usertoken)
+            is_admin = False
+            if logged_in_user != None:
+                if logged_in_user.id == user.id:
+                    is_admin = True
             username = user.username.split(" ")[0].capitalize()
             listings = Listing.objects.filter(user=user)
             reviews = UserReviews.objects.filter(user_for=user)
-            return render(request, 'userprofile.html',{'user': user, 'username': username, 'listings': listings,'reviews': reviews})
+            return render(request, 'userprofile.html',{'user': user, 'username': username, 'listings': listings,'reviews': reviews, 'is_admin': is_admin})
         else:
             return redirect('home')
     else:
@@ -400,11 +410,18 @@ def showlisting(request):
             listing = Listing.objects.get(id=listingid)
             user = listing.user
 
-            similar_listing = Listing.objects.filter(user=user.id).exclude(id=listing.id)
-            similar_listing = similar_listing[0]
+            similar_listing = Listing.objects.filter(user=user.id)
+            flag = 0
+            if len(similar_listing) > 1:
+                similar_listing = similar_listing.exclude(id=listing.id)
+                similar_listing = similar_listing[0]
+                flag =1
+
             username = user.username.split(" ")[0].capitalize()
             listingname = listing.name.capitalize()
             reviews = ListingReviews.objects.filter(listing=listing)
+            if flag == 0 and len(similar_listing) == 1:
+                return render(request, 'showlisting.html',{'user': user, 'username': username, 'listing': listing, 'listingname': listingname, 'similar_listing': listing, 'reviews': reviews})
             return render(request, 'showlisting.html',{'user': user, 'username': username, 'listing': listing, 'listingname': listingname, 'similar_listing': similar_listing, 'reviews': reviews})
         else:
             return redirect('home')
@@ -458,3 +475,39 @@ def send_mail_to_seller(request):
         url = "/showlisting?listing_id="+str(listing.id)
         messages.info(request, 'error')
         return redirect(url)
+
+def delete_listing(request):
+    # Check if user is admin or not
+    print(request.GET)
+    if "TheNairobiPrivateToken" in request.session:
+        usertoken = request.session['TheNairobiPrivateToken']
+        if User.objects.filter(private_token=usertoken).exists():
+            user = User.objects.get(private_token=usertoken)
+            userid = request.GET['user_id']
+            userid = int(userid)
+            if User.objects.filter(id=userid).exists():
+                    user_listing = User.objects.get(id=userid)
+                    if user.id == user_listing.id:
+                        if "listing_id" in request.GET:
+                            listingid = request.GET['listing_id']
+                            listingid = int(listingid)
+                            if Listing.objects.filter(id=listingid).exists():
+                                listing = Listing.objects.get(id=listingid)
+                                listing.delete()
+                                # Decrease user listing count
+                                user_ad_count = int(user_listing.ad_count) -1
+                                user_listing.ad_count = str(user_ad_count)
+                                user_listing.save()
+                                return redirect('home')
+                            else:
+                                return redirect('home')
+                        else:
+                            return redirect('home')
+                    else:
+                        return redirect('home')
+            else:
+                    return redirect('home')
+        else:
+            return redirect('home')
+    else:
+        return redirect('home')

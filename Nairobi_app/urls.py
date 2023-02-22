@@ -28,6 +28,7 @@ urlpatterns = [
     path('showlisting', views.showlisting, name='showlisting'),
     path('new_review_listing', views.new_review_listing, name='new_review_listing'),
     path('send_mail_to_seller', views.send_mail_to_seller, name='send_mail_to_seller'),
+    path('delete_listing', views.delete_listing, name='delete_listing'),
 
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
