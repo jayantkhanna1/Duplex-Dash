@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title -->
+    <title>OTP</title>
+
+    <!-- Login Css -->
+    <link rel="stylesheet" href="{%static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/selectize.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- Logo -->
+    <link rel="icon" type="image/png" href="../static/images/logo.svg">
+
+    <!-- Local Styling -->
+    <style>
+        @media screen and (max-width: 900px) {
+            .toast {
+                top: 82px;
+                right: 39px;
+            }
+        }
+    </style>
+</head>
+<body>
+   
+    <!-- Login Heading -->
+    <section id="login_heading">
+        <h2>OTP</h2>
+        <p>Please Do not go back or Refresh this page.</p>
+    </section>
+
+    <!-- Login Form -->
+    <form action="verify_phone" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div id="email_div">
+            <label for="email">OTP</label><br>
+            <input type="text" name="otp" id="email" placeholder="Enter OTP recevied on your Email" required>
+        </div>
+        <input style="visibility:hidden;" type="file" name="image" value="{{image}}">
+        <div id="login_button">
+            <input type="submit" value="Verify">
+        </div>
+    </form>
+    <div class="toast" id="toast">
+        <div class="toast-body">
+        </div>
+    </div>
+    <input id="hidden_toast" value="off" style="display: none;" readonly type="text">
+    <script>
+        const toast = document.getElementById('toast');
+       
+        '{% for message in messages %}'
+                 
+            if('{{message}}' == 'OTP is incorrect!'){
+                toast.classList.add('visible');
+                toast.querySelector('.toast-body').innerHTML = "OTP is Incorrect!";
+                toast.classList.add('toast-body-error');
+                document.getElementById("hidden_toast").value = "on"
+            }
+        '{% endfor %}'
+        
+        if(document.getElementById("hidden_toast").value == "on"){
+            setTimeout(remove_toast,4000)
+            
+        }
+        function remove_toast(){
+            const toast = document.getElementById('toast');
+            toast.classList.remove('visible');
+            document.getElementById("hidden_toast").value = "off"
+        }
+    </script>
+</body>
+</html>

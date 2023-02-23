@@ -30,6 +30,8 @@ urlpatterns = [
     path('send_mail_to_seller', views.send_mail_to_seller, name='send_mail_to_seller'),
     path('delete_listing', views.delete_listing, name='delete_listing'),
     path('search_listing', views.search_listing, name='search_listing'),
+    path('ipn', views.ipn, name='ipn'),
+    path('verify_phone',views.verify_phone,name="verify_phone")
 
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

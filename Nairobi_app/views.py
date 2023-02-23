@@ -7,6 +7,7 @@ import os
 from django.contrib import messages
 import string 
 from dotenv import load_dotenv
+from twilio.rest import Client
 load_dotenv()
 
 otp : int
@@ -216,29 +217,58 @@ def onboard_user(request):
     if "TheNairobiPrivateToken" in request.session:
         username = request.POST['username']
         phone = request.POST['phone']
+        # Twilio phone verify then save
+        account_sid = os.getenv('TWILIO_SID')
+        auth_token = os.getenv('TWILIO_AUTH_TOKEN')
+        client = Client(account_sid, auth_token)
+        otp = random.randint(100000,999999)
+        message = client.messages.create(
+            body='Hello here is your OTP for Nairobi Listing '+str(otp),
+            from_=os.getenv('TWILIO_PHONE_NUMBER'),
+            to="+91"+str(phone)
+        )
+        # Message sent now show OTP page and store all other data in session storage temporarily
+        request.session['username'] = username
+        request.session['phone'] = phone
         if 'image' in request.FILES:
             image = request.FILES['image']
         else:
             image = ""
 
         if 'redirect' in request.POST:
-            redirect_to = request.POST['redirect']
+            request.session['redirect'] = request.POST['redirect']
         else:
-            redirect_to = ""
-        private_token = request.session['TheNairobiPrivateToken']
-        user = User.objects.get(private_token=private_token)
-        user.username = username
-        user.phone = phone
-        if image != "":
-            user.image = image
-        user.save()
-
-        if redirect_to != "":
-            return redirect(redirect_to)
-        else:
-            return redirect('home')
+            request.session['redirect'] = ""
+        request.session['otp'] = otp
+        return render(request, 'phone_verification.html',{'image':image})
     else:
         return redirect('login')
+
+def verify_phone(request):
+    try:
+        otp_user = request.POST["otp"]
+        otp_got = request.session['otp']
+        if str(otp_got) == str(otp_user):
+            username = request.session["username"]
+            phone = request.session["phone"]
+            image = request.POST['image']
+            redirect_to = request.session["redirect"]
+            private_token = request.session["TheNairobiPrivateToken"]
+            user = User.objects.get(private_token=private_token)
+            user.username = username
+            user.phone = phone
+            if image != "":
+                user.image = image
+            user.save()
+            if redirect_to != "":
+                return redirect(redirect_to)
+            else:
+                return redirect('home')
+        else:
+            messages.info(request, 'OTP is incorrect!')
+            return render(request, 'phone_verification.html')
+    except:
+        return redirect('home')
 
 def newlisting(request):
     tag = request.POST['tag']
@@ -522,3 +552,6 @@ def search_listing(request):
     listings = listings | Listing.objects.filter(name__icontains=what)
     listings = listings | Listing.objects.filter(country__icontains=where)
     return render(request, 'searchlisting.html', {'listings': listings})
+
+def ipn(request):
+    print(request.GET)
