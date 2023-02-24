@@ -125,7 +125,7 @@
                                 <div class="wrapper">
                                     <div class="image">
                                         <h3>
-                                            <a href="#" class="tag category">{{listing.category_name}}</a>
+                                            <a href="#" class="tag category">{{listing.category}}</a>
                                             <a href="showuser?user_id={{listing.user}}" class="title">{{listing.name}}</a>
                                             
                                         </h3>
@@ -147,11 +147,11 @@
                                                 <i class="fa fa-user"></i>{{listing.user_name}}
                                             </a>
                                         </figure>
-                                        <figure style="margin-right: 25px;">
+                                        {% comment %} <figure style="margin-right: 25px;">
                                             <a href="javascript:void(0)" onclick="like('{{listing.id}}')">
                                                 <i style="cursor: pointer;" class="fa fa-2x fa-heart"></i>
                                             </a>
-                                        </figure>
+                                        </figure> {% endcomment %}
                                     </div>
                                     <!--end meta-->
                                     <div class="description">

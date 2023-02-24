@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 import json
+import random
 
 '''
 Token
@@ -55,7 +56,7 @@ reg_ipn_live_url = "https://pay.pesapal.com/v3/api/URLSetup/GetIpnList"
 headers={
     "Authentication": "Bearer " + token,
     "Authorization": "Bearer " + token,
-    "Accept" : "application/json",
+    "Accept" : "application/json", 
     "Content-Type" : "application/json"
 }
 params = {
@@ -82,5 +83,27 @@ headers={
 params = {
     "Authentication": "Bearer " + token,
     "Authorization": "Bearer " + token,
-    
+    "id" : random.randint(1, 100000000),
+    "currency" : "USD",
+    "amount" : "1",
+    "description" : "test",
+    "callback_url" : "https://759f-14-139-239-130.in.ngrok.io/paymentConfirmation",
+    "notification_id" : ipn_data['ipn_id'],
+    "billing_address" :{
+        "email_address": "john.doe@example.com",
+        "phone_number": "0723xxxxxx",
+        "country_code": "KE",
+        "first_name": "John",
+        "last_name": "Doe",
+        "city": "Nairobi",
+        "postal_code": "00100",
+        "address_line1": "123 Main Street",
+        "address_line2": "Apartment 1"
+    }
 }
+
+data = requests.post(demo_submit_url, json=params, headers=headers)
+submit_data = data.json()
+# Log order id
+#url = submit_data['redirect_url']
+print(submit_data)

@@ -407,8 +407,7 @@ def userprofile(request):
         else:
             return redirect('home')
     else:
-        return redirect('home')
-        
+        return redirect('home')    
 
 def new_review(request):
     user_for = request.POST['user_for']
@@ -555,3 +554,6 @@ def search_listing(request):
 
 def ipn(request):
     print(request.GET)
+
+def paymentConfirmation(request):
+    print(request)

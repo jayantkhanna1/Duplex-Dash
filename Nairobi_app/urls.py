@@ -31,7 +31,9 @@ urlpatterns = [
     path('delete_listing', views.delete_listing, name='delete_listing'),
     path('search_listing', views.search_listing, name='search_listing'),
     path('ipn', views.ipn, name='ipn'),
-    path('verify_phone',views.verify_phone,name="verify_phone")
+    path('verify_phone',views.verify_phone,name="verify_phone"),
+    path('paymentConfirmation',views.paymentConfirmation,name="paymentConfirmation")
+
 
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

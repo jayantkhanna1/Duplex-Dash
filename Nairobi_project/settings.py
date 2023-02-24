@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ['*']
 
 
 # Application definition
-
+# CSRF_TRUSTED_ORIGINS = ['https://759f-14-139-239-130.in.ngrok.io']
 INSTALLED_APPS = [
     'Nairobi_app',
     'django.contrib.admin',

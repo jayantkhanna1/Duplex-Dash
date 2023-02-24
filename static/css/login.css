@@ -3,9 +3,24 @@
     padding: 0;
 }
 body{
-    /* background: url('../images/login_bg.svg'); */
+    background: url('../images/login.svg');
     background-size: cover;
-    background-position-x: center;
+    background-position: center;
+}
+#login_heading p{
+    color: white;
+    opacity: 1;
+    padding-top: 15px;
+}
+label,#forgot_password,#signup_tag_p,#signup,#terms a{
+    color: white;
+    opacity: 1;
+}
+label a{
+    color: white !important;
+}
+#signup:hover,label a:hover{
+    color: #FEF200;
 }
 #computer_header{
     display: flex;
@@ -172,6 +187,7 @@ form{
 @media screen and (max-width: 900px) {
     body{
         overflow-x: hidden;
+        background-size: auto;
     }
     #computer_header{
         display: none;

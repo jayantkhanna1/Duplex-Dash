@@ -145,8 +145,6 @@
                      
                     {% if is_admin %}
                     <a href="javascript:void(0)" onclick="delete_listing('{{listing.id}}','{{listing.user.id}}')"><i style="cursor: pointer;" class="fa fa-2x fa-trash"></i></a> 
-                    {% else %}
-                    <a href="javascript:void(0)" onclick="like('{{listing.id}}')"><i style="cursor: pointer;" class="fa fa-2x fa-heart"></i></a> 
                     {% endif %}
                   </figure>
                </div>
