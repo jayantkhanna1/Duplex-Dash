@@ -217,6 +217,7 @@ def onboard_user(request):
     if "TheNairobiPrivateToken" in request.session:
         username = request.POST['username']
         phone = request.POST['phone']
+        extension = request.POST['extension']
         # Twilio phone verify then save
         account_sid = os.getenv('TWILIO_SID')
         auth_token = os.getenv('TWILIO_AUTH_TOKEN')
@@ -225,13 +226,13 @@ def onboard_user(request):
         message = client.messages.create(
             body='Hello here is your OTP for Nairobi Listing '+str(otp),
             from_=os.getenv('TWILIO_PHONE_NUMBER'),
-            to="+91"+str(phone)
+            to="+"+str(extension)+str(phone)
         )
         # Message sent now show OTP page and store all other data in session storage temporarily
         request.session['username'] = username
-        request.session['phone'] = phone
-        if 'image' in request.FILES:
-            image = request.FILES['image']
+        request.session['phone'] = "+"+str(extension)+str(phone)
+        if 'userimage' in request.FILES:
+            image = request.FILES['userimage']
         else:
             image = ""
 
@@ -239,6 +240,27 @@ def onboard_user(request):
             request.session['redirect'] = request.POST['redirect']
         else:
             request.session['redirect'] = ""
+
+        if "facebook" in request.POST:
+            request.session['facebook'] = request.POST['facebook']
+        else:
+            request.session['facebook'] = ""
+        
+        if "twitter" in request.POST:
+            request.session['twitter'] = request.POST['twitter']
+        else:
+            request.session['twitter'] = ""
+
+        if "instagram" in request.POST:
+            request.session['instagram'] = request.POST['instagram']
+        else:
+            request.session['instagram'] = ""
+
+        if "description" in request.POST:
+            request.session['description'] = request.POST['description']
+        else:
+            request.session['description'] = ""
+
         request.session['otp'] = otp
         return render(request, 'phone_verification.html',{'image':image})
     else:
@@ -254,9 +276,18 @@ def verify_phone(request):
             image = request.POST['image']
             redirect_to = request.session["redirect"]
             private_token = request.session["TheNairobiPrivateToken"]
+            description = request.session["description"]
+            facebook = request.session["facebook"]
+            twitter = request.session["twitter"]
+            instagram = request.session["instagram"]
             user = User.objects.get(private_token=private_token)
             user.username = username
             user.phone = phone
+            user.image = image
+            user.description = description
+            user.facebook = facebook
+            user.twitter = twitter
+            user.instagram = instagram
             if image != "":
                 user.image = image
             user.save()
