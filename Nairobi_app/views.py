@@ -583,6 +583,34 @@ def search_listing(request):
     listings = listings | Listing.objects.filter(country__icontains=where)
     return render(request, 'searchlisting.html', {'listings': listings})
 
+def contact(request):
+    if "TheNairobiPrivateToken" in request.session:
+        usertoken = request.session['TheNairobiPrivateToken']
+        if User.objects.filter(private_token=usertoken).exists():
+            user = User.objects.get(private_token=usertoken)
+            username = user.username.split(" ")[0].capitalize()
+            return render(request, 'contact.html', {'user': user, 'username': username})
+        else:
+            return render(request, 'contact.html')
+    return render(request, 'contact.html')
+
+def contact_admin(request):
+    name = request.POST["name"]
+    email = request.POST["email"]
+    message = request.POST["message"]
+    message = "Name : " + name + "\nEmail : " + email + "\nMessage : " + message
+    sender = os.getenv('EMAIL')
+    reciever = [os.getenv('EMAIL')]
+    try:
+        send_mail("Hey there you have a new query from a user of Nairobi Listing",message,sender,recipient_list=reciever)
+        messages.info(request, 'done')
+    except:
+        messages.info(request, 'error')
+    return redirect('contact')
+
+
+
+
 def ipn(request):
     print(request.GET)
 

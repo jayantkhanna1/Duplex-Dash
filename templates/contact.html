@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Title -->
-    <title>Packages</title>
+    <title>Contact</title>
     
     <!-- Logo in  -->
     <link rel="icon" type="image/png" href="../static/images/logo.svg">
@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <link rel="stylesheet" href="{% static 'css/packages.css' %}">
+    <link rel="stylesheet" href="{% static 'css/contact.css' %}">
     
 </head>
 <body>
@@ -56,38 +57,57 @@
         <div id="header_top_mobile">
             <span id="menu" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
         </div>
-        <h2 id="heading">Marketing smarts for growing <br> businesses</h2>
+        <h2 id="heading">Contact Us</h2>
     </header>
 
     <section id="pricing">
-        <h3 id="pricing_heading">Choose Best Plan For you</h3>
-        <div id="pricing_inner">
-            <div class="card">
-                <h4 class="title_for_pricing">
-                    Standard
-                </h4>
-                <h5 class="price">$299</h5>
-                <div class="features_pricing">
-                    <p class="pricing_feature"><img class="tick" src="{% static 'images/tick.svg' %}" alt="">Maximum of 3 property listing</p>
-                    <p class="pricing_feature"><img class="tick" src="{% static 'images/tick.svg' %}" alt="">CRM System</p>
-                    <p class="pricing_feature"><img class="tick" src="{% static 'images/tick.svg' %}" alt="">Location on google Maps</p>
+        <h3 id="pricing_heading">Lets Start a conversation</h3>
+        <div id="contact_inner">
+            <div id="contact_left">
+                <div>
+                    <h5 id="heading_contact_innner">Contact Information</h5>
                 </div>
-                <div class="buy_now">
-                    <a href="buynow?package=Standard">Buy Now</a>
+                <div>
+                    <p id="info_contact_inner">“Buyers decide in the first eight seconds of seeing a home if they’re interested in buying it. Get out of your car, walk in their shoes and see what they see within the first eight seconds”.</p>
                 </div>
+                <div>
+                    <div class="contact_tags">
+                        <img src="{% static 'images/phone.svg' %}" alt="">
+                        <a href="#">+254 712 345 678</a>
+                    </div>
+                    <div class="contact_tags">
+                        <img src="{% static 'images/email.svg' %}" alt="">
+                        <a  href="#">jayantkhanna3105@gmail.com</a>
+                    </div>
+                    <div class="contact_tags" id="last_tag">
+                        <img src="{% static 'images/twitter.svg' %}" alt="">
+                        <a  href="#">www.twitter.com</a>
+                    </div>
+                </div>
+                <img src="{% static 'images/contact_img.svg' %}" alt="" id="contact_img">
             </div>
-            <div class="card">
-                <h4 class="title_for_pricing">
-                    Premium
-                </h4>
-                <h5 class="price">$299</h5>
-                <div class="features_pricing">
-                    <p class="pricing_feature"><img class="tick" src="{% static 'images/tick.svg' %}" alt="">Unlimited property listing</p>
-                    <p class="pricing_feature"><img class="tick" src="{% static 'images/tick.svg' %}" alt="">Featured Tag</p>
-                    <p class="pricing_feature"><img class="tick" src="{% static 'images/tick.svg' %}" alt="">Dedicated Marketing Team</p>
-                </div>
-                <div class="buy_now">
-                    <a href="buynow?package=Premium">Buy Now</a>
+            <div id="contact_right">
+                <div id="form_contact_author">
+                    <h2>Get in Touch: </h2>
+                    <form action="contact_admin" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div>
+                            <h4>Name</h4>
+                            <input name="name" class="author_contact_input" type="text" required>
+                        </div>
+                        <div>
+                            <h4>Email</h4>
+                            <input name="email" class="author_contact_input" type="email" required>
+                        </div>
+                        <div>
+                            <h4>Message</h4>
+                            <textarea required name="message" class="author_contact_input" name="" id="" cols="30" rows="10"></textarea>
+                        </div>
+                        <div>
+                            <input id="send_mail_submit" type="submit" value="Send Message">
+                        </div>
+                        <input type="hidden" name="listingid" value="{{listing.id}}">
+                    </form>
                 </div>
             </div>
         </div>
@@ -119,6 +139,41 @@
             </div>
         </div>
     </footer> 
+
+    <div class="toast" id="toast">
+        <div class="toast-body">
+        </div>
+    </div>
+    <input id="hidden_toast" value="off" style="display: none;" readonly type="hidden">
+    <script>
+        const toast = document.getElementById('toast');
+       
+        '{% for message in messages %}'
+        if('{{message}}' == 'done'){
+            toast.classList.add('visible');
+            toast.querySelector('.toast-body').innerHTML = "Mail sent successfully !";
+            toast.classList.add('toast-body-success');
+            document.getElementById("hidden_toast").value = "on"
+        }           
+            if('{{message}}' == 'error'){
+                toast.classList.add('visible');
+                toast.querySelector('.toast-body').innerHTML = "Error sending mail !";
+                toast.classList.add('toast-body-error');
+                document.getElementById("hidden_toast").value = "on"
+            }
+            '{% endfor %}'
+        
+        if(document.getElementById("hidden_toast").value == "on"){
+            setTimeout(remove_toast,4000)
+            
+        }
+        function remove_toast(){
+            const toast = document.getElementById('toast');
+            toast.classList.remove('visible');
+            document.getElementById("hidden_toast").value = "off"
+        }
+    </script>
+    
     <!-- Modal for user info -->
     <div id="user_info_modal">
         <div id="triangle"></div>

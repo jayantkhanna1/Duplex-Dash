@@ -32,7 +32,9 @@ urlpatterns = [
     path('search_listing', views.search_listing, name='search_listing'),
     path('ipn', views.ipn, name='ipn'),
     path('verify_phone',views.verify_phone,name="verify_phone"),
-    path('paymentConfirmation',views.paymentConfirmation,name="paymentConfirmation")
+    path('paymentConfirmation',views.paymentConfirmation,name="paymentConfirmation"),
+    path('contact',views.contact,name="contact"),
+    path('contact_admin',views.contact_admin,name="contact_admin"),
 
 
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
