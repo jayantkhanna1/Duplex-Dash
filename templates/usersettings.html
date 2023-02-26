@@ -1,0 +1,187 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta -->
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="ThemeStarz">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Internal CSS -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Varela+Round" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/selectize.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/submitad.css' %}">
+    <link rel="stylesheet" href="{% static 'css/onboarding.css' %}">
+    <link rel="stylesheet" href="{% static 'css/usersettings.css' %}">
+
+    <!-- Title -->
+	<title>User Settings</title>
+
+    <!-- Logo in  -->
+    <link rel="icon" type="image/png" href="../static/images/logo.svg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <!-- Header Computer View -->
+    <header id="computer_header">
+        <div id="left_header">
+            <img src="{%static 'images/logo.svg' %}" alt="logo">
+        </div>
+        <div id="right_header">
+            <a href="home">Home</a>
+            <a href="pricing">Pricing</a>
+            <a href="contact">Contact</a>
+            <a href="submitad" id="submit_ad">Add a Listing</a>
+        </div>
+    </header>
+
+    <!-- Header Mobile View -->
+    <header id="header_mobile">
+        <div id="left_header">
+            <img src="{%static 'images/logo.svg' %}" alt="logo">
+        </div>
+        <div id="header_top_mobile">
+            <span id="menu" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+        </div>
+    </header>
+
+    <form action="change_user_info" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div id="top">
+            <div id="user_img">
+                <div class="image-container">
+                    <img id="userimg" src="{{user.image}}" alt="Profile Picture">
+                    <div class="overlay">
+                      <span class="text">Tap to upload a new picture</span>
+                    </div>
+                    <input type="file" class="file-upload" accept="image/*" value="{{user.image}}" name="userimg">
+                </div>
+            </div>
+            <div id="user_info">
+                <div id="title_outer">
+                    <h5>Username* :</h5>
+                    <input placeholder="Your Full name" name="username" id="title_of_listing" type="text" value="{{user.username}}">
+                </div>
+                <div id="title_outer">
+                    <h5>Old Password* :</h5>
+                    <input placeholder="Your old Password" name="old_password" id="title_of_listing" type="text">
+                </div>
+                <div id="title_outer">
+                    <h5>New Password* :</h5>
+                    <input placeholder="Your New Password" name="new_password" id="title_of_listing" type="text">
+                </div>
+                <div id="title_outer">
+                    <h5>Facebook :</h5>
+                    {% if user.facebook == None %}
+                    <input placeholder="Your Facebook Handle" name="facebook" id="title_of_listing" type="text">
+                    {% else %}
+                    <input placeholder="Your Instagram Handle" name="facebook" id="title_of_listing" type="text" value="{{user.facebook}}">
+                    {% endif %}
+                </div>
+                <div id="title_outer">
+                    <h5>Instagram :</h5>
+                    {% if user.instagram == None %}
+                    <input placeholder="Your Instagram Handle" name="instagram" id="title_of_listing" type="text">
+                    {% else %}
+                    <input placeholder="Your Facebook Handle" name="instagram" id="title_of_listing" type="text" value="{{user.instagram}}">
+                    {% endif %}
+                </div>
+                <div id="title_outer">
+                    <h5 id="twitter_heading">Twitter :</h5>
+                    {% if user.twitter == None %}
+                    <input placeholder="Your Twitter Handle" name="twitter" id="title_of_listing" type="text">
+                    {% else %}
+                    <input placeholder="Your Twitter Handle" name="twitter" id="title_of_listing" type="text" value="{{user.twitter}}">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div id="description">
+            <h5>Description* :</h5>
+            <textarea name="description" placeholder="Description of Listing" rows="4" cols="50">{{user.description}}</textarea>
+        </div>
+        <input type="submit" value="Update Information" id="submit_ad_button">
+    </form>
+
+   
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="home">Home</a>
+        <a href="contact">Contact</a>
+        <a href="pricing">Pricing</a>
+        <a href="submitad" id="submit_ad">Add a Listing</a>
+    </div>
+
+    <div class="toast" id="toast">
+        <div class="toast-body">
+        </div>
+    </div>
+
+    <input id="hidden_toast" value="off" style="display: none;" readonly type="text">
+    <script>
+        const toast = document.getElementById('toast');
+       
+        '{% for message in messages %}'
+                 
+            if('{{message}}' == 'error'){
+                toast.classList.add('visible');
+                toast.querySelector('.toast-body').innerHTML = "Old Password is incorrect!";
+                toast.classList.add('toast-body-error');
+                document.getElementById("hidden_toast").value = "on"
+            }
+            if('{{message}}' == 'done'){
+                toast.classList.add('visible');
+                toast.querySelector('.toast-body').innerHTML = "User Information Updated!";
+                toast.classList.add('toast-body-success');
+                document.getElementById("hidden_toast").value = "on"
+            }
+        '{% endfor %}'
+        
+        if(document.getElementById("hidden_toast").value == "on"){
+            setTimeout(remove_toast,4000)
+            
+        }
+        function remove_toast(){
+            const toast = document.getElementById('toast');
+            toast.classList.remove('visible');
+            document.getElementById("hidden_toast").value = "off"
+        }
+    </script>
+	<script>
+        function openNav() {
+          document.getElementById("mySidenav").style.width = "250px";
+        }
+        
+        function closeNav() {
+          document.getElementById("mySidenav").style.width = "0";
+        }
+    </script>
+    <script>
+        // JavaScript
+        const imageContainer = document.querySelector('.image-container');
+        const fileUpload = document.querySelector('.file-upload');
+
+        imageContainer.addEventListener('click', () => {
+        fileUpload.click();
+        });
+
+        fileUpload.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        
+        reader.addEventListener('load', () => {
+            imageContainer.querySelector('img').setAttribute('src', reader.result);
+        });
+        
+        reader.readAsDataURL(file);
+        });
+    </script>
+    <script src="{% static 'js/submit_ad.js' %}"></script>
+</body>
+</html>

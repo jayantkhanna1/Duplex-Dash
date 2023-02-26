@@ -6,6 +6,7 @@ from passlib.hash import sha512_crypt as sha512
 import os
 from django.contrib import messages
 import string 
+import requests
 from dotenv import load_dotenv
 from twilio.rest import Client
 load_dotenv()
@@ -409,11 +410,92 @@ def packages(request):
 def buynow(request):
     package = request.GET['package']
     if "TheNairobiPrivateToken" in request.session:
-        usertoken = request.session['TheNairobiPrivateToken']
-        user = User.objects.get(private_token=usertoken)
-        user.package = package
-        user.save()
-        return redirect('home')
+        request.session['TheNairobiPackage'] = package
+        price = 0
+        if package == "Premium":
+            price = 290
+        elif package == "Standard":
+            price = 190
+        else:
+            price = 0
+
+        # Calling Mpesa API to get access token
+        params = {
+            "consumer_key" : os.getenv("CONSUMER_KEY"),
+            "consumer_secret" : os.getenv("CONSUMER_SECRET"),
+        }
+        headers = {
+            "Accept" : "application/json",
+            "Content-Type" : "application/json"
+        }
+        mpesa_url_1 = os.getenv("MPESA_URL_1")
+        data = requests.post(mpesa_url_1, json=params)
+        token = data.json()['token']
+
+        # IPN
+        mpesa_url_2 = os.getenv("MPESA_URL_2")
+        headers={
+            "Authentication": "Bearer " + token,
+            "Authorization": "Bearer " + token,
+            "Accept" : "application/json",
+            "Content-Type" : "application/json"
+        }
+        params = {
+            "url" : os.getenv("BASE_URL")+"ipn",
+            "ipn_notification_type":"POST",
+            "Authentication": "Bearer " + token,
+            "Authorization": "Bearer " + token,
+        }
+        data = requests.post(mpesa_url_2, json=params, headers=headers)
+        ipn_data = data.json()
+
+        # Getting IPN endpoints
+        mpesa_url_3 = os.getenv("MPESA_URL_3")
+        headers={
+            "Authentication": "Bearer " + token,
+            "Authorization": "Bearer " + token,
+            "Accept" : "application/json", 
+            "Content-Type" : "application/json"
+        }
+        params = {
+            "Authentication": "Bearer " + token,
+            "Authorization": "Bearer " + token,
+        }
+        data = requests.get(mpesa_url_3, headers=headers, params=params)
+
+        # Submitting payment request
+        mpesa_url_4 = os.getenv("MPESA_URL_4")
+        headers={
+            "Authentication": "Bearer " + token,
+            "Authorization": "Bearer " + token,
+            "Accept" : "application/json",
+            "Content-Type" : "application/json"
+        }
+        params = {
+            "Authentication": "Bearer " + token,
+            "Authorization": "Bearer " + token,
+            "id" : random.randint(1, 100000000),
+            "currency" : "USD",
+            "amount" : str(price),
+            "description" : "test",
+            "callback_url" : os.getenv("BASE_URL")+"paymentConfirmation",
+            "notification_id" : ipn_data['ipn_id'],
+            "billing_address" :{
+                "email_address": "john.doe@example.com",
+                "phone_number": "0723xxxxxx",
+                "country_code": "KE",
+                "first_name": "John",
+                "last_name": "Doe",
+                "city": "Nairobi",
+                "postal_code": "00100",
+                "address_line1": "123 Main Street",
+                "address_line2": "Apartment 1"
+            }
+        }
+
+        data = requests.post(mpesa_url_4, json=params, headers=headers)
+        submit_data = data.json()
+        return redirect(submit_data['redirect_url'])
     else:
         return redirect('login')
 
@@ -608,6 +690,71 @@ def contact_admin(request):
         messages.info(request, 'error')
     return redirect('contact')
 
+def usersettings(request):
+    if "TheNairobiPrivateToken" in request.session:
+        usertoken = request.session['TheNairobiPrivateToken']
+        if User.objects.filter(private_token=usertoken).exists():
+            user = User.objects.get(private_token=usertoken)
+            username = user.username.split(" ")[0].capitalize()
+            return render(request, 'usersettings.html', {'user': user, 'username': username})
+        else:
+            return redirect('home')
+    return redirect('home')
+
+def change_user_info(request):
+    if "TheNairobiPrivateToken" in request.session:
+        usertoken = request.session['TheNairobiPrivateToken']
+        if User.objects.filter(private_token=usertoken).exists():
+            user = User.objects.get(private_token=usertoken)
+            username = user.username.split(" ")[0].capitalize()
+            if "username" in request.POST:
+                username = request.POST["username"]
+                user.username = username
+                user.save()
+                messages.info(request, 'done')
+            if "new_password" in request.POST and "old_password" in request.POST and request.POST["new_password"] != "" and request.POST["old_password"] != "":
+                new_password = request.POST["new_password"]
+                print(new_password)
+                if "old_password" in request.POST:
+                    old_password = request.POST["old_password"]
+                    old_password = sha512.hash(old_password, rounds=5000,salt="NairobiApp")
+                    new_password = sha512.hash(new_password, rounds=5000,salt="NairobiApp") 
+                    if old_password == user.password:
+                        user.password = new_password
+                        messages.info(request, 'done')
+                        user.save()
+                    else:
+                        messages.info(request, 'error')
+                else:
+                    messages.info(request, 'error')
+            if "userimg" in request.FILES:
+                user_img = request.FILES["userimg"]
+                user.image = user_img
+                user.save()
+                messages.info(request, 'done')
+            if "facebook" in request.POST:
+                facebook = request.POST["facebook"]
+                user.facebook = facebook
+                user.save()
+                messages.info(request, 'done')
+            if "twitter" in request.POST:
+                twitter = request.POST["twitter"]
+                user.twitter = twitter
+                user.save()
+                messages.info(request, 'done')
+            if "instagram" in request.POST:
+                instagram = request.POST["instagram"]
+                user.instagram = instagram
+                user.save()
+                messages.info(request, 'done')
+            if "description" in request.POST:
+                description = request.POST["description"]
+                user.description = description
+                user.save()
+                messages.info(request, 'done')
+            return redirect('usersettings')
+        else:
+            return redirect('home') 
 
 
 
@@ -615,4 +762,21 @@ def ipn(request):
     print(request.GET)
 
 def paymentConfirmation(request):
-    print(request)
+    try:
+        package = request.session['TheNairobiPackage']
+        usertoken = request.session['TheNairobiPrivateToken']
+        user = User.objects.get(private_token=usertoken)
+        user.package = package
+        user.save()
+        messages.info(request, 'done')
+        return redirect('home')
+    except Exception as e:
+        messages.info(request, 'error')
+        sender = os.getenv('EMAIL')
+        reciever = [os.getenv('EMAIL')]
+        user = User.objects.get(private_token=request.session['TheNairobiPrivateToken'])
+        message = "Email : " + user.email +" \n error : " + "There was an error with the payment of client : "+e   
+        message_to_user = "There was an error with your payment. If you are receiving this message it means we have recieved your error and we will get back to you as soon as possible. In the mean time you can contact us on our email address : "+os.getenv("CONSUMER_EMAIL")
+        send_mail("Hey there! we have recieved your error.",message_to_user,sender,recipient_list=reciever)
+        send_mail("Hey there you have a ERROR from a user of Nairobi Listing. There was an error with client payment",message,sender,recipient_list=reciever)
+        return redirect('home')

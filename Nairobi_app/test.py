@@ -1,95 +1,72 @@
+import random
+import json
 import requests
 import os
 from dotenv import load_dotenv
 load_dotenv()
-import json
-import random
 
-'''
-Token
-'''
-demo_url = "https://cybqa.pesapal.com/pesapalv3/api/Auth/RequestToken"
-live_url = "https://pay.pesapal.com/v3/api/Auth/RequestToken"
-
+price = 1
 params = {
-    "consumer_key" :  "qkio1BGGYAXTu2JOfm7XSXNruoZsrqEW",
-    "consumer_secret" : "osGQ364R49cXKeOYSpaOnT++rHs=",
+    "consumer_key": os.getenv("CONSUMER_KEY"),
+    "consumer_secret": os.getenv("CONSUMER_SECRET"),
 }
 headers = {
-    "Accept" : "application/json",
-    "Content-Type" : "application/json"
+    "Accept": "application/json",
+    "Content-Type": "application/json"
 }
-# send a post request to demourl with params
-data = requests.post(demo_url, json=params)
+mpesa_url_1 = os.getenv("MPESA_URL_1")
+data = requests.post(mpesa_url_1, json=params)
 token = data.json()['token']
 
-
-'''
-IPN
-'''
-demo_ipn_url = "https://cybqa.pesapal.com/pesapalv3/api/URLSetup/RegisterIPN"
-live_ipn_url = "https://pay.pesapal.com/v3/api/URLSetup/RegisterIPN"
-    
-headers={
+# IPN
+mpesa_url_2 = os.getenv("MPESA_URL_2")
+headers = {
     "Authentication": "Bearer " + token,
     "Authorization": "Bearer " + token,
-    "Accept" : "application/json",
-    "Content-Type" : "application/json"
+    "Accept": "application/json",
+    "Content-Type": "application/json"
 }
 params = {
-    "url" : "https://759f-14-139-239-130.in.ngrok.io/ipn", # Ngrok
-    "ipn_notification_type":"POST",
+    "url": os.getenv("BASE_URL")+"ipn",
+    "ipn_notification_type": "POST",
     "Authentication": "Bearer " + token,
     "Authorization": "Bearer " + token,
 }
-
-data = requests.post(demo_ipn_url, json=params, headers=headers)
+data = requests.post(mpesa_url_2, json=params, headers=headers)
 ipn_data = data.json()
 
-
-'''
-getting registered ipn endpoints
-'''
-reg_ipn_demo_url = "https://cybqa.pesapal.com/pesapalv3/api/URLSetup/GetIpnList"
-reg_ipn_live_url = "https://pay.pesapal.com/v3/api/URLSetup/GetIpnList"
-
-headers={
+# Getting IPN endpoints
+mpesa_url_3 = os.getenv("MPESA_URL_3")
+headers = {
     "Authentication": "Bearer " + token,
     "Authorization": "Bearer " + token,
-    "Accept" : "application/json", 
-    "Content-Type" : "application/json"
+    "Accept": "application/json",
+    "Content-Type": "application/json"
 }
 params = {
     "Authentication": "Bearer " + token,
     "Authorization": "Bearer " + token,
 }
+data = requests.get(mpesa_url_3, headers=headers, params=params)
 
-data = requests.get(reg_ipn_demo_url, headers=headers, params=params)
-
-
-'''
-submitting order
-'''
-
-demo_submit_url = "https://cybqa.pesapal.com/pesapalv3/api/Transactions/SubmitOrderRequest"
-live_submit_url = "https://pay.pesapal.com/v3/api/Transactions/SubmitOrderRequest"
-
-headers={
+# Submitting payment request
+mpesa_url_4 = os.getenv("MPESA_URL_4")
+headers = {
     "Authentication": "Bearer " + token,
     "Authorization": "Bearer " + token,
-    "Accept" : "application/json",
-    "Content-Type" : "application/json"
+    "Accept": "application/json",
+    "Content-Type": "application/json"
 }
 params = {
     "Authentication": "Bearer " + token,
     "Authorization": "Bearer " + token,
-    "id" : random.randint(1, 100000000),
-    "currency" : "USD",
-    "amount" : "1",
-    "description" : "test",
-    "callback_url" : "https://759f-14-139-239-130.in.ngrok.io/paymentConfirmation",
-    "notification_id" : ipn_data['ipn_id'],
-    "billing_address" :{
+    "id": random.randint(1, 100000000),
+    "currency": "USD",
+    "amount": str(price),
+    "description": "test",
+    "callback_url": os.getenv("BASE_URL")+"paymentConfirmation",
+    "notification_id": ipn_data['ipn_id'],
+    "billing_address": {
         "email_address": "john.doe@example.com",
         "phone_number": "0723xxxxxx",
         "country_code": "KE",
@@ -102,8 +79,6 @@ params = {
     }
 }
 
-data = requests.post(demo_submit_url, json=params, headers=headers)
+data = requests.post(mpesa_url_4, json=params, headers=headers)
 submit_data = data.json()
-# Log order id
-#url = submit_data['redirect_url']
-print(submit_data)
+print(submit_data["redirect_url"])

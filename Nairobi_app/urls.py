@@ -35,6 +35,8 @@ urlpatterns = [
     path('paymentConfirmation',views.paymentConfirmation,name="paymentConfirmation"),
     path('contact',views.contact,name="contact"),
     path('contact_admin',views.contact_admin,name="contact_admin"),
+    path('usersettings',views.usersettings,name="usersettings"),
+    path('change_user_info',views.change_user_info,name="change_user_info"),
 
 
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

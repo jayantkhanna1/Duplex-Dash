@@ -240,6 +240,40 @@
         <a href="pricing">Pricing</a>
         <a href="submitad" id="submit_ad">Add a Listing</a>
     </div>
+    <div class="toast" id="toast">
+        <div class="toast-body">
+        </div>
+    </div>
+    <input id="hidden_toast" value="off" style="display: none;" readonly type="text">
+    <script>
+        const toast = document.getElementById('toast');
+       
+        '{% for message in messages %}'
+                 
+            if('{{message}}' == 'done'){
+                toast.classList.add('visible');
+                toast.querySelector('.toast-body').innerHTML = "Payment Successful! Your package is now active!";
+                toast.classList.add('toast-body-success');
+                document.getElementById("hidden_toast").value = "on"
+            }
+            if('{{message}}' == 'error'){
+                toast.classList.add('visible');
+                toast.querySelector('.toast-body').innerHTML = "Payment Failed! Do not worry our technical team is on it.";
+                toast.classList.add('toast-body-error');
+                document.getElementById("hidden_toast").value = "on"
+            }
+        '{% endfor %}'
+        
+        if(document.getElementById("hidden_toast").value == "on"){
+            setTimeout(remove_toast,4000)
+            
+        }
+        function remove_toast(){
+            const toast = document.getElementById('toast');
+            toast.classList.remove('visible');
+            document.getElementById("hidden_toast").value = "off"
+        }
+    </script>
 
     <script>
         function openNav() {

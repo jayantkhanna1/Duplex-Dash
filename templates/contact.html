@@ -173,7 +173,7 @@
             document.getElementById("hidden_toast").value = "off"
         }
     </script>
-    
+
     <!-- Modal for user info -->
     <div id="user_info_modal">
         <div id="triangle"></div>
@@ -183,7 +183,7 @@
         </div>
         <div id="options_modal">
             <hr class="hr_options"  id="hr_option_1">
-            <a href="userdashboard" class="option">
+            <a href="userdashboard?userid={{user.id}}" class="option">
                 <div>
                     <p>Dashboard</p>
                     <img src="{% static 'images/arrow.svg' %}" alt="">  
