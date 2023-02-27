@@ -357,10 +357,47 @@ figure{
     padding: 3px 14px;
     border-radius: 15px;
 }
+
+.toast {
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: transparent;
+    transform: translateY(100%);
+    opacity: 0;
+
+    transition:
+        opacity 500ms,
+        transform 500ms;
+}
+
+.toast.visible {
+    transform: translateY(79px) translateX(-29px);
+    opacity: 1;
+    border-radius: 15px;
+}
+
+.toast-body {
+    padding: 20px 24px;
+    font-size: larger;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;   
+    border-radius: 15px;
+}
+.toast-body-success{
+    background-color: #b7ffcb;
+    color: #119130;
+    border: 1px solid greenyellow;
+}
+.toast-body-error {
+    background-color: #ffd4d4;
+    color: #b80000;
+    border: 1px solid rgb(255, 0, 0);
+}
   @media screen and (max-height: 450px) {
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px;}
   }
+
 /* Mobile Styling */
 @media screen and (max-width: 900px) {
     body{
@@ -487,5 +524,9 @@ figure{
     }
     .image-wrapper img{
         width: 100%;
+    }
+    .toast {
+        top: 173px;
+        right: 74px;
     }
 }

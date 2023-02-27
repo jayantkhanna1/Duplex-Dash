@@ -44,16 +44,21 @@
                 <a href="home">Home</a>
                 <a href="usersettings?userid={{user.id}}">Settings</a>
                 <a href="logout">Logout</a>
-                <a href="submitad" id="submit_ad">Submit Ad</a>
+                <a href="submitad" id="submit_ad">Add a Listing</a>
             </div>
         </div>
 
         <!-- Mobile Header -->
+        <!-- Header Mobile View -->
+    <header id="header_mobile">
+        <div id="left_header">
+            <img src="{%static 'images/logo.svg' %}" alt="logo">
+        </div>
         <div id="header_top_mobile">
             <span id="menu" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
         </div>
     </header>
-
+    </header>
     <section id="userdetails">
         <!-- To give bend -->
         <div class="background">
