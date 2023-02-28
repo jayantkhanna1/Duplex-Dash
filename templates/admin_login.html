@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title -->
+    <title>Login</title>
+
+    <!-- Login Css -->
+    <link rel="stylesheet" href="{%static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/selectize.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- Logo -->
+    <link rel="icon" type="image/png" href="../static/images/logo.svg">
+</head>
+<body>
+    <!-- Header Computer View -->
+    <header id="computer_header">
+        <div id="left_header">
+            <img src="{%static 'images/logo.svg' %}" alt="logo">
+        </div>
+        <div id="right_header">
+            <a href="home">Home</a>
+            <a href="pricing">Pricing</a>
+            <a href="">Contact</a>
+            <a href="">Add a Listing</a>
+        </div>
+    </header>
+
+    <!-- Header Mobile View -->
+    <header id="header_mobile">
+        <div id="left_header">
+            <img src="{%static 'images/logo.svg' %}" alt="logo">
+        </div>
+        <div id="right_header">
+            <span id="menu" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+        </div>
+    </header>
+
+    <!-- Login Heading -->
+    <section id="login_heading">
+        <h2>Login</h2>
+        <p>Welcome Back Mr. Admin</p>
+    </section>
+
+    <!-- Login Form -->
+    <form action="admin_login_form" enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+        <div id="email_div">
+            <label for="email">Email</label><br>
+            <input type="email" name="email" id="email" placeholder="Enter your Email" required>
+        </div>
+        <div id="password_div">
+            <label for="password">Password</label><br>
+            <input type="password" name="password" id="password" placeholder="Enter your Password" required>
+        </div>
+        <div id="login_button">
+            <input type="submit" value="Sign in">
+        </div>
+    </form>
+    <p id="signup_tag_p">Don't have an account? <a href="signup" id="signup">Signup</a></p>
+    <div class="toast" id="toast">
+        <div class="toast-body">
+        </div>
+    </div>
+    <input id="hidden_toast" value="off" style="display: none;" readonly type="text">
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="home">Home</a>
+        <a href="contact">Contact</a>
+        <a href="pricing">Pricing</a>
+        <a href="submitad" id="submit_ad">Add a Listing</a>
+    </div>
+
+    <script>
+        function openNav() {
+          document.getElementById("mySidenav").style.width = "250px";
+        }
+        
+        function closeNav() {
+          document.getElementById("mySidenav").style.width = "0";
+        }
+    </script>
+    <script>
+        const toast = document.getElementById('toast');
+       
+        '{% for message in messages %}'
+                 
+            if('{{message}}' == 'error'){
+                toast.classList.add('visible');
+                toast.querySelector('.toast-body').innerHTML = "Email or Password is incorrect!";
+                toast.classList.add('toast-body-error');
+                document.getElementById("hidden_toast").value = "on"
+            }
+        '{% endfor %}'
+        
+        if(document.getElementById("hidden_toast").value == "on"){
+            setTimeout(remove_toast,4000)
+            
+        }
+        function remove_toast(){
+            const toast = document.getElementById('toast');
+            toast.classList.remove('visible');
+            document.getElementById("hidden_toast").value = "off"
+        }
+    </script>
+</body>
+</html>

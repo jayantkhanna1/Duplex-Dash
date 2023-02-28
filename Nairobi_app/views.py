@@ -15,7 +15,7 @@ otp : int
 # Create your views here.
 def index(request):
     # Getting random listings
-    listings = Listing.objects.all().order_by('?')[:8]
+    listings = Listing.objects.filter(active = True).order_by('?')[:8]
     if 'TheNairobiPrivateToken' in request.session:
         # Getting User details
         try:
@@ -514,7 +514,7 @@ def userprofile(request):
                 if logged_in_user.id == user.id:
                     is_admin = True
             username = user.username.split(" ")[0].capitalize()
-            listings = Listing.objects.filter(user=user)
+            listings = Listing.objects.filter(user=user,active=True)
             reviews = UserReviews.objects.filter(user_for=user)
             return render(request, 'userprofile.html',{'user': user, 'username': username, 'listings': listings,'reviews': reviews, 'is_admin': is_admin})
         else:
@@ -548,11 +548,11 @@ def showlisting(request):
     if "listing_id" in request.GET:
         listingid = request.GET['listing_id']
         listingid = int(listingid)
-        if Listing.objects.filter(id=listingid).exists():
+        if Listing.objects.filter(id=listingid,active=True).exists():
             listing = Listing.objects.get(id=listingid)
             user = listing.user
 
-            similar_listing = Listing.objects.filter(user=user.id)
+            similar_listing = Listing.objects.filter(user=user.id,active = True)
             flag = 0
             if len(similar_listing) > 1:
                 similar_listing = similar_listing.exclude(id=listing.id)
@@ -576,7 +576,7 @@ def new_review_listing(request):
     rating = request.POST["rating_to_be_sent_back"]
     review = request.POST["review"]
     listing = request.POST["listing"]
-    if Listing.objects.filter(id=listing).exists():
+    if Listing.objects.filter(id=listing,active=True).exists():
         listing = Listing.objects.get(id=listing)
         review = ListingReviews.objects.create(listing=listing, user=name, subject=subject, rating=rating, review=review)
         review.save()
@@ -598,7 +598,7 @@ def send_mail_to_seller(request):
     message = request.POST["message"]
     listingid = request.POST["listingid"]
     sender = os.getenv('EMAIL')
-    if Listing.objects.filter(id=listingid).exists():
+    if Listing.objects.filter(id=listingid,active=True).exists():
         listing = Listing.objects.get(id=listingid)
         user = listing.user
         if User.objects.filter(id=user.id).exists():
@@ -633,7 +633,7 @@ def delete_listing(request):
                         if "listing_id" in request.GET:
                             listingid = request.GET['listing_id']
                             listingid = int(listingid)
-                            if Listing.objects.filter(id=listingid).exists():
+                            if Listing.objects.filter(id=listingid,active=True).exists():
                                 listing = Listing.objects.get(id=listingid)
                                 listing.delete()
                                 # Decrease user listing count
@@ -658,11 +658,11 @@ def search_listing(request):
     where = request.GET['where']
     what = request.GET['what']
     category = request.GET['category']
-    listings = Listing.objects.filter(category__icontains=category)
-    listings = listings | Listing.objects.filter(state__icontains=where)
-    listings = listings | Listing.objects.filter(city__icontains=where)
-    listings = listings | Listing.objects.filter(name__icontains=what)
-    listings = listings | Listing.objects.filter(country__icontains=where)
+    listings = Listing.objects.filter(category__icontains=category,active = True)
+    listings = listings | Listing.objects.filter(state__icontains=where,active = True)
+    listings = listings | Listing.objects.filter(city__icontains=where,active = True)
+    listings = listings | Listing.objects.filter(name__icontains=what,active = True)
+    listings = listings | Listing.objects.filter(country__icontains=where,active = True)
     return render(request, 'searchlisting.html', {'listings': listings})
 
 def contact(request):
@@ -756,7 +756,42 @@ def change_user_info(request):
         else:
             return redirect('home') 
 
+def admin_login(request):
+    return render(request, 'admin_login.html')
 
+def admin(request):
+    if "TheNairobiAdminToken" in request.session:
+        admintoken = request.session['TheNairobiAdminToken']
+        if Admin.objects.filter(private_token=admintoken).exists():
+            admin = Admin.objects.get(private_token=admintoken)
+            listing = Listing.objects.all()
+            users = User.objects.all()
+            return render(request, 'admin.html', {'admin': admin,'listing':listing,'users':users})
+        else:
+            return redirect('adminlogin')
+    return redirect('admin_login')
+
+def admin_login_form(request):
+    email = request.POST["email"]
+    password = request.POST["password"]
+    if Admin.objects.filter(email = email).exists():
+        admin = Admin.objects.get(email = email)
+        if password == admin.password:
+            res = ''.join(random.choices(string.ascii_lowercase +string.digits, k=30))
+            request.session['TheNairobiAdminToken'] = res
+            admin.private_token = res
+            admin.save()
+            return redirect('admin')
+        else:
+            messages.info(request,"error")
+            return redirect('admin_login')
+    else:
+        messages.info(request,"error")
+        return redirect('admin_login')
+    
+def admin_logout(request):
+    del request.session['TheNairobiPrivateToken']
+    return redirect('admin_login')
 
 def ipn(request):
     print(request.GET)

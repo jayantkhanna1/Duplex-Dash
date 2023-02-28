@@ -2,10 +2,8 @@ from django.db import models
 
 # Create your models here.
 class Admin(models.Model):
-    username = models.CharField(max_length=100)
     password = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)
-    phone = models.CharField(max_length=100)
     private_token = models.CharField(max_length=100)
 
 class UserPackage(models.Model):
@@ -30,6 +28,7 @@ class User(models.Model):
     instagram = models.CharField(max_length=100,blank=True,null=True)
 
 class Listing(models.Model):
+    active = models.BooleanField(default=False)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=10000)
     price = models.CharField(max_length=100)

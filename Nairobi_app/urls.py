@@ -37,6 +37,10 @@ urlpatterns = [
     path('contact_admin',views.contact_admin,name="contact_admin"),
     path('usersettings',views.usersettings,name="usersettings"),
     path('change_user_info',views.change_user_info,name="change_user_info"),
+    path('admin_login',views.admin_login,name="admin_login"),
+    path('admin_login_form',views.admin_login_form,name="admin_login_form"),
+    path('admin_logout',views.admin_logout,name="admin_logout"),
+    path('admin',views.admin,name="admin"),
 
 
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
