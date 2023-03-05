@@ -145,3 +145,20 @@
     justify-content: left;
     width: 100%;
 }
+
+
+@media screen and (max-width: 900px) {
+    .items:not(.selectize-input) {
+        margin-left: -2.5rem !important;
+    }
+    .items:not(.selectize-input) .item {
+        padding-right: 0 !important;
+    }
+    #options{
+        display: none;
+    }
+    #heading_listing {
+        margin-top: 38px;
+        margin-left: 12px;
+    }
+}

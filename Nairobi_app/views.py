@@ -10,6 +10,7 @@ import requests
 from dotenv import load_dotenv
 from twilio.rest import Client
 load_dotenv()
+from django.http import HttpResponse
 
 otp : int
 # Create your views here.
@@ -413,9 +414,9 @@ def buynow(request):
         request.session['TheNairobiPackage'] = package
         price = 0
         if package == "Premium":
-            price = 290
+            price = int(os.getenv("PREMIUM_LISTING_PRICE"))
         elif package == "Standard":
-            price = 190
+            price = int(os.getenv("STANDARD_LISTING_PRICE"))
         else:
             price = 0
 
@@ -764,9 +765,16 @@ def admin(request):
         admintoken = request.session['TheNairobiAdminToken']
         if Admin.objects.filter(private_token=admintoken).exists():
             admin = Admin.objects.get(private_token=admintoken)
-            listing = Listing.objects.all()
+            listings = Listing.objects.all()
             users = User.objects.all()
-            return render(request, 'admin.html', {'admin': admin,'listing':listing,'users':users})
+            user_number = len(users)
+            revenue = 0
+            for i in users:
+                if i.package == "Premium":
+                    revenue = revenue + int(os.getenv("PREMIUM_LISTING_PRICE"))
+                else:
+                    revenue = revenue + int(os.getenv("STANDARD_LISTING_PRICE"))
+            return render(request, 'admin.html', {'admin': admin,'listings':listings,'users':users,'user_number':user_number,'revenue':revenue})
         else:
             return redirect('adminlogin')
     return redirect('admin_login')
@@ -790,8 +798,31 @@ def admin_login_form(request):
         return redirect('admin_login')
     
 def admin_logout(request):
-    del request.session['TheNairobiPrivateToken']
+    del request.session['TheNairobiAdminToken']
     return redirect('admin_login')
+
+def add_360_link(request):
+    link = request.POST["link"]
+    listing_id = request.POST["listing_id"]
+    listing = Listing.objects.get(id=listing_id)
+    listing.video_360_link = link
+    listing.save()
+    return HttpResponse("done")
+
+def make_listing_active(request):
+    listing_id = request.POST["listing_id"]
+    listing = Listing.objects.get(id=listing_id)
+    listing.active = True
+    listing.save()
+    return HttpResponse("done")
+
+def make_listing_deactive(request):
+    listing_id = request.POST["listing_id"]
+    listing = Listing.objects.get(id=listing_id)
+    listing.active = False
+    listing.save()
+    return HttpResponse("done")
+
 
 def ipn(request):
     print(request.GET)
@@ -815,3 +846,5 @@ def paymentConfirmation(request):
         send_mail("Hey there! we have recieved your error.",message_to_user,sender,recipient_list=reciever)
         send_mail("Hey there you have a ERROR from a user of Nairobi Listing. There was an error with client payment",message,sender,recipient_list=reciever)
         return redirect('home')
+    
+

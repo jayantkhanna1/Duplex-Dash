@@ -41,6 +41,9 @@ urlpatterns = [
     path('admin_login_form',views.admin_login_form,name="admin_login_form"),
     path('admin_logout',views.admin_logout,name="admin_logout"),
     path('admin',views.admin,name="admin"),
+    path('add_360_link',views.add_360_link,name="add_360_link"),
+    path('make_listing_active',views.make_listing_active,name="make_listing_active"),
+    path('make_listing_deactive',views.make_listing_deactive,name="make_listing_deactive"),
 
 
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
