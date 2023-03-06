@@ -44,6 +44,8 @@ urlpatterns = [
     path('add_360_link',views.add_360_link,name="add_360_link"),
     path('make_listing_active',views.make_listing_active,name="make_listing_active"),
     path('make_listing_deactive',views.make_listing_deactive,name="make_listing_deactive"),
+    path('terms_and_condition',views.terms_and_condition,name="terms_and_condition"),
+    path('privacy_policy',views.privacy_policy,name="privacy_policy"),
 
 
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

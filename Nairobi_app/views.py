@@ -823,6 +823,11 @@ def make_listing_deactive(request):
     listing.save()
     return HttpResponse("done")
 
+def terms_and_condition(request):
+    return render(request, 'term.html')
+
+def privacy_policy(request):
+    return render(request, 'privacy.html')
 
 def ipn(request):
     print(request.GET)
