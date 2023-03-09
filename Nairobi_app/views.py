@@ -672,7 +672,7 @@ def contact(request):
         if User.objects.filter(private_token=usertoken).exists():
             user = User.objects.get(private_token=usertoken)
             username = user.username.split(" ")[0].capitalize()
-            return render(request, 'contact.html', {'user': user, 'username': username})
+            return render(request, 'contact.html', {'user': user, 'username': username, 'login': True})
         else:
             return render(request, 'contact.html')
     return render(request, 'contact.html')

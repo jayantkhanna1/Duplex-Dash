@@ -1,0 +1,72 @@
+#top{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+#extension_and_phone{
+    display: flex;
+}
+#extension{
+    margin-right: 10px;
+    width: 70px;
+}
+#phone{
+    width: 540px;
+}
+#user_img{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+    margin-top: 100px;
+}
+.drop-zone{
+    padding: 160px;    
+    margin-right: 40px;
+}
+.drop-zone__prompt{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+#description{
+    margin-bottom: 50px;
+}
+#submit_ad_button {
+    margin-left: 150px;
+    margin-bottom: 50px;
+    margin-top: -8px;
+    float: right;
+    margin-right: 60px;
+}
+
+
+@media screen and (max-width: 900px) {
+    #title_outer, #price_outer {
+        width: 400px;
+    }
+    #extension_and_phone{
+        justify-content: center;
+    }
+    #phone{
+        width: 200px;
+    }
+    #phone_outer h5{
+        margin-left: 45px;
+    }
+    #title_outer h5{
+        margin-left: -210px;
+    }
+    #twitter_heading{
+        margin-left: -250px !important;
+    }
+    #description h5{
+        margin-left: -231px;
+    }
+    .drop-zone {
+        padding: 59px;
+        margin-right: -198px;
+    }
+}

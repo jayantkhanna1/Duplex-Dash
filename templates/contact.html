@@ -29,6 +29,11 @@
     <link rel="stylesheet" href="{% static 'css/packages.css' %}">
     <link rel="stylesheet" href="{% static 'css/contact.css' %}">
     
+    <style>
+        #sign_in,#sign_up{
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
     <header id="header">
@@ -37,10 +42,20 @@
                 <img src="{% static 'images/logo.svg' %}" alt="" id="logo">
             </div>
             <div id="right_signin">
+                {% if Login %}
                 <a href="javascript:void(0)" onclick="open_user_details_modal()" id="right_signin_a">
                     <img id="user_img" src="{{user.image.url}}" alt="">
                     <p>Hi {{username}}</p>
                 </a>
+                {% else %}
+                <div>
+                    <div id="right_signin">
+                        <a href="login" id="sign_in">Sign in</a>
+                        <a href="signup" id="sign_up">Sign up</a>
+                    </div>
+                    
+                </div>
+                {% endif %}
             </div>
            
         </div>
