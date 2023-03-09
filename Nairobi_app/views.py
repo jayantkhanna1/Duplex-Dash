@@ -61,20 +61,16 @@ def signup_form(request):
     sender = os.getenv('EMAIL')
     send_mail("OTP for Nairobi Listing",message,sender,recipient_list=reciever)
 
-    # Storing OTP in a global variable
-    global otp
-    otp = temp_otp
-
     # Redirecting to OTP page with all information for verification 
-    return render(request, 'otp.html',{'email': email,'password': password})
+    return render(request, 'otp.html',{'email': email,'password': password,'otp': temp_otp})
 
 def otp_verify(request):
     email = request.POST['email']
     password = request.POST['password']
     otp_entered = request.POST['otp']
+    otp_built = request.POST['otp_built']
 
-    global otp
-    if otp_entered == str(otp):
+    if otp_entered == str(otp_built):
         # Creating Private Token
         res = ''.join(random.choices(string.ascii_lowercase +string.digits, k=30))
 
@@ -151,13 +147,9 @@ def forgot_password_form(request):
         sender = os.getenv('EMAIL')
         send_mail("OTP for Nairobi Listing",message,sender,recipient_list=reciever)
 
-        # Storing OTP in a global variable
-        global otp
-        otp = temp_otp
-
         messages.info(request, 'OTP has been sent to your Email!')
         # Redirecting to OTP page with all information for verification 
-        return render(request, 'otp_forgot_password.html',{'email': email})
+        return render(request, 'otp_forgot_password.html',{'email': email,'otp': temp_otp})
     except:
         messages.info(request, 'User Does Not Exist!')
         return redirect('forgot_password')
@@ -165,9 +157,8 @@ def forgot_password_form(request):
 def otp_verify_forgot_password(request):
     email = request.POST['email']
     otp_entered = request.POST['otp']
-
-    global otp
-    if otp_entered == str(otp):
+    otp_built = request.POST['otp_built']
+    if otp_entered == str(otp_built):
         return render(request, 'reset_password.html',{'email': email})
     else:
         messages.info(request, 'OTP is incorrect!')
