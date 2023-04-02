@@ -17,15 +17,15 @@ otp : int
 def index(request):
     # Getting random listings
     listings = Listing.objects.filter(active = True).order_by('?')[:8]
-    if 'TheNairobiPrivateToken' in request.session:
+    if 'DuplexDashPrivateToken' in request.session:
         # Getting User details
         try:
-            user = User.objects.get(private_token=request.session['TheNairobiPrivateToken'])
+            user = User.objects.get(private_token=request.session['DuplexDashPrivateToken'])
             if user.username == "":
                 return redirect('onboarding_form')
             # Getting just first name of user
             username = user.username.split(" ")[0].capitalize()
-            return render(request, 'index.html', {'privatetoken': request.session['TheNairobiPrivateToken'],'login': True,'listings': listings,'user': user,'username':username})
+            return render(request, 'index.html', {'privatetoken': request.session['DuplexDashPrivateToken'],'login': True,'listings': listings,'user': user,'username':username})
         except:
             pass
     #user = User.objects.get(email="jayantkhanna3105@gmail.com")
@@ -56,10 +56,10 @@ def signup_form(request):
     temp_otp = random.randint(100000,999999)
 
     # Sending User Email
-    message = "Your OTP for Nairobi Listing is "+str(temp_otp)
+    message = "Your OTP for Duplex Dash is "+str(temp_otp)
     reciever = [email]
     sender = os.getenv('EMAIL')
-    send_mail("OTP for Nairobi Listing",message,sender,recipient_list=reciever)
+    send_mail("OTP for Duplex Dash",message,sender,recipient_list=reciever)
 
     # Redirecting to OTP page with all information for verification 
     return render(request, 'otp.html',{'email': email,'password': password,'otp': temp_otp})
@@ -75,7 +75,7 @@ def otp_verify(request):
         res = ''.join(random.choices(string.ascii_lowercase +string.digits, k=30))
 
         #Storing Private Token in Session
-        request.session['TheNairobiPrivateToken'] = res
+        request.session['DuplexDashPrivateToken'] = res
 
         # Creating User
         user = User(private_token=res,email=email,password=password)
@@ -94,7 +94,7 @@ def onboarding_form(request):
     return render(request, 'onboarding.html',{'redirect': 'home'})
 
 def logout(request):
-    del request.session['TheNairobiPrivateToken']
+    del request.session['DuplexDashPrivateToken']
     return redirect('index')
 
 def login_form(request):
@@ -115,7 +115,7 @@ def login_form(request):
                 res = ''.join(random.choices(string.ascii_lowercase +string.digits, k=30))
 
                 #Storing Private Token in Session
-                request.session['TheNairobiPrivateToken'] = res
+                request.session['DuplexDashPrivateToken'] = res
 
                 # Updating Private Token
                 user.private_token = res
@@ -142,10 +142,10 @@ def forgot_password_form(request):
         temp_otp = random.randint(100000,999999)
 
         # Sending User Email
-        message = "Your OTP for Nairobi Listing is "+str(temp_otp)
+        message = "Your OTP for Duplex Dash is "+str(temp_otp)
         reciever = [email]
         sender = os.getenv('EMAIL')
-        send_mail("OTP for Nairobi Listing",message,sender,recipient_list=reciever)
+        send_mail("OTP for Duplex Dash",message,sender,recipient_list=reciever)
 
         messages.info(request, 'OTP has been sent to your Email!')
         # Redirecting to OTP page with all information for verification 
@@ -185,8 +185,8 @@ def reset_password(request):
     return redirect('index')
 
 def submitad(request):
-    if 'TheNairobiPrivateToken' in request.session:
-        private_token = request.session['TheNairobiPrivateToken']
+    if 'DuplexDashPrivateToken' in request.session:
+        private_token = request.session['DuplexDashPrivateToken']
         if User.objects.filter(private_token=private_token).exists():
             user = User.objects.get(private_token=private_token)
             if user.username == "":
@@ -207,7 +207,7 @@ def submitad(request):
         return redirect('login')
     
 def onboard_user(request):
-    if "TheNairobiPrivateToken" in request.session:
+    if "DuplexDashPrivateToken" in request.session:
         username = request.POST['username']
         phone = request.POST['phone']
         extension = request.POST['extension']
@@ -217,7 +217,7 @@ def onboard_user(request):
         client = Client(account_sid, auth_token)
         otp = random.randint(100000,999999)
         message = client.messages.create(
-            body='Hello here is your OTP for Nairobi Listing '+str(otp),
+            body='Hello here is your OTP for Duplex Dash '+str(otp),
             from_=os.getenv('TWILIO_PHONE_NUMBER'),
             to="+"+str(extension)+str(phone)
         )
@@ -268,7 +268,7 @@ def verify_phone(request):
             phone = request.session["phone"]
             image = request.POST['image']
             redirect_to = request.session["redirect"]
-            private_token = request.session["TheNairobiPrivateToken"]
+            private_token = request.session["DuplexDashPrivateToken"]
             description = request.session["description"]
             facebook = request.session["facebook"]
             twitter = request.session["twitter"]
@@ -363,7 +363,7 @@ def newlisting(request):
             location = location.replace('"', '') 
     else:
         location = None
-    usertoken  = request.session['TheNairobiPrivateToken']
+    usertoken  = request.session['DuplexDashPrivateToken']
     user = User.objects.get(private_token=usertoken)
     userpackage = user.package
     if userpackage == "Premium":
@@ -384,8 +384,8 @@ def newlisting(request):
     return redirect(url)
 
 def packages(request):
-    if 'TheNairobiPrivateToken' in request.session:
-        private_token = request.session['TheNairobiPrivateToken']
+    if 'DuplexDashPrivateToken' in request.session:
+        private_token = request.session['DuplexDashPrivateToken']
         if User.objects.filter(private_token=private_token).exists():
             user = User.objects.get(private_token=private_token)
             if user.username == "":
@@ -401,7 +401,7 @@ def packages(request):
 
 def buynow(request):
     package = request.GET['package']
-    if "TheNairobiPrivateToken" in request.session:
+    if "DuplexDashPrivateToken" in request.session:
         request.session['TheNairobiPackage'] = package
         price = 0
         if package == "Premium":
@@ -497,8 +497,8 @@ def userprofile(request):
         if User.objects.filter(id=userid).exists():
             user = User.objects.get(id=userid)
             logged_in_user = None
-            if "TheNairobiPrivateToken" in request.session:
-                usertoken = request.session['TheNairobiPrivateToken']
+            if "DuplexDashPrivateToken" in request.session:
+                usertoken = request.session['DuplexDashPrivateToken']
                 if User.objects.filter(private_token=usertoken).exists():
                     logged_in_user = User.objects.get(private_token=usertoken)
             is_admin = False
@@ -597,7 +597,7 @@ def send_mail_to_seller(request):
             user = User.objects.get(id=user.id)
             reciever = [user.email]
             message = "Name : " + name + "\nEmail : " + email + "\nMessage : " + message
-            send_mail("Hey there you have a new enquiry for your listing at The Nairobi Listing",message,sender,recipient_list=reciever)
+            send_mail("Hey there you have a new enquiry for your listing at Duplex Dash",message,sender,recipient_list=reciever)
             url = "/showlisting?listing_id="+str(listing.id)
             messages.info(request, 'done')
             return redirect(url)
@@ -613,8 +613,8 @@ def send_mail_to_seller(request):
 def delete_listing(request):
     # Check if user is admin or not
     print(request.GET)
-    if "TheNairobiPrivateToken" in request.session:
-        usertoken = request.session['TheNairobiPrivateToken']
+    if "DuplexDashPrivateToken" in request.session:
+        usertoken = request.session['DuplexDashPrivateToken']
         if User.objects.filter(private_token=usertoken).exists():
             user = User.objects.get(private_token=usertoken)
             userid = request.GET['user_id']
@@ -658,8 +658,8 @@ def search_listing(request):
     return render(request, 'searchlisting.html', {'listings': listings})
 
 def contact(request):
-    if "TheNairobiPrivateToken" in request.session:
-        usertoken = request.session['TheNairobiPrivateToken']
+    if "DuplexDashPrivateToken" in request.session:
+        usertoken = request.session['DuplexDashPrivateToken']
         if User.objects.filter(private_token=usertoken).exists():
             user = User.objects.get(private_token=usertoken)
             username = user.username.split(" ")[0].capitalize()
@@ -676,15 +676,15 @@ def contact_admin(request):
     sender = os.getenv('EMAIL')
     reciever = [os.getenv('EMAIL')]
     try:
-        send_mail("Hey there you have a new query from a user of Nairobi Listing",message,sender,recipient_list=reciever)
+        send_mail("Hey there you have a new query from a user of Duplex Dash",message,sender,recipient_list=reciever)
         messages.info(request, 'done')
     except:
         messages.info(request, 'error')
     return redirect('contact')
 
 def usersettings(request):
-    if "TheNairobiPrivateToken" in request.session:
-        usertoken = request.session['TheNairobiPrivateToken']
+    if "DuplexDashPrivateToken" in request.session:
+        usertoken = request.session['DuplexDashPrivateToken']
         if User.objects.filter(private_token=usertoken).exists():
             user = User.objects.get(private_token=usertoken)
             username = user.username.split(" ")[0].capitalize()
@@ -694,8 +694,8 @@ def usersettings(request):
     return redirect('home')
 
 def change_user_info(request):
-    if "TheNairobiPrivateToken" in request.session:
-        usertoken = request.session['TheNairobiPrivateToken']
+    if "DuplexDashPrivateToken" in request.session:
+        usertoken = request.session['DuplexDashPrivateToken']
         if User.objects.filter(private_token=usertoken).exists():
             user = User.objects.get(private_token=usertoken)
             username = user.username.split(" ")[0].capitalize()
@@ -826,7 +826,7 @@ def ipn(request):
 def paymentConfirmation(request):
     try:
         package = request.session['TheNairobiPackage']
-        usertoken = request.session['TheNairobiPrivateToken']
+        usertoken = request.session['DuplexDashPrivateToken']
         user = User.objects.get(private_token=usertoken)
         user.package = package
         user.save()
@@ -836,11 +836,11 @@ def paymentConfirmation(request):
         messages.info(request, 'error')
         sender = os.getenv('EMAIL')
         reciever = [os.getenv('EMAIL')]
-        user = User.objects.get(private_token=request.session['TheNairobiPrivateToken'])
+        user = User.objects.get(private_token=request.session['DuplexDashPrivateToken'])
         message = "Email : " + user.email +" \n error : " + "There was an error with the payment of client : "+e   
         message_to_user = "There was an error with your payment. If you are receiving this message it means we have recieved your error and we will get back to you as soon as possible. In the mean time you can contact us on our email address : "+os.getenv("CONSUMER_EMAIL")
         send_mail("Hey there! we have recieved your error.",message_to_user,sender,recipient_list=reciever)
-        send_mail("Hey there you have a ERROR from a user of Nairobi Listing. There was an error with client payment",message,sender,recipient_list=reciever)
+        send_mail("Hey there you have a ERROR from a user of Duplex Dash. There was an error with client payment",message,sender,recipient_list=reciever)
         return redirect('home')
     
 
