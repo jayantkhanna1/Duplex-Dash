@@ -42,7 +42,7 @@ def signup_form(request):
     # Getting form data
     email = request.POST['email']
     password = request.POST['password']
-    password=sha512.hash(password, rounds=5000,salt="NairobiApp")
+    password=sha512.hash(password, rounds=5000,salt="DuplexDash")
 
     # Checking if Email already exists
     try:
@@ -102,7 +102,7 @@ def login_form(request):
     password = request.POST['password']
 
     # Hashing Password
-    password=sha512.hash(password, rounds=5000,salt="NairobiApp")
+    password=sha512.hash(password, rounds=5000,salt="DuplexDash")
 
     # Checking if Email exists
     try:
@@ -174,7 +174,7 @@ def reset_password(request):
         return render(request, 'reset_password.html',{'email': email})
     
     # Hashing Password
-    password=sha512.hash(password, rounds=5000,salt="NairobiApp")
+    password=sha512.hash(password, rounds=5000,salt="DuplexDash")
 
     # Updating Password
     user = User.objects.get(email=email)
@@ -402,7 +402,7 @@ def packages(request):
 def buynow(request):
     package = request.GET['package']
     if "DuplexDashPrivateToken" in request.session:
-        request.session['TheNairobiPackage'] = package
+        request.session['DuplexDashPackage'] = package
         price = 0
         if package == "Premium":
             price = int(os.getenv("PREMIUM_LISTING_PRICE"))
@@ -709,8 +709,8 @@ def change_user_info(request):
                 print(new_password)
                 if "old_password" in request.POST:
                     old_password = request.POST["old_password"]
-                    old_password = sha512.hash(old_password, rounds=5000,salt="NairobiApp")
-                    new_password = sha512.hash(new_password, rounds=5000,salt="NairobiApp") 
+                    old_password = sha512.hash(old_password, rounds=5000,salt="DuplexDash")
+                    new_password = sha512.hash(new_password, rounds=5000,salt="DuplexDash") 
                     if old_password == user.password:
                         user.password = new_password
                         messages.info(request, 'done')
@@ -752,8 +752,8 @@ def admin_login(request):
     return render(request, 'admin_login.html')
 
 def admin(request):
-    if "TheNairobiAdminToken" in request.session:
-        admintoken = request.session['TheNairobiAdminToken']
+    if "DuplexDashAdminToken" in request.session:
+        admintoken = request.session['DuplexDashAdminToken']
         if Admin.objects.filter(private_token=admintoken).exists():
             admin = Admin.objects.get(private_token=admintoken)
             listings = Listing.objects.all()
@@ -777,7 +777,7 @@ def admin_login_form(request):
         admin = Admin.objects.get(email = email)
         if password == admin.password:
             res = ''.join(random.choices(string.ascii_lowercase +string.digits, k=30))
-            request.session['TheNairobiAdminToken'] = res
+            request.session['DuplexDashAdminToken'] = res
             admin.private_token = res
             admin.save()
             return redirect('admin')
@@ -789,7 +789,7 @@ def admin_login_form(request):
         return redirect('admin_login')
     
 def admin_logout(request):
-    del request.session['TheNairobiAdminToken']
+    del request.session['DuplexDashAdminToken']
     return redirect('admin_login')
 
 def add_360_link(request):
@@ -825,7 +825,7 @@ def ipn(request):
 
 def paymentConfirmation(request):
     try:
-        package = request.session['TheNairobiPackage']
+        package = request.session['DuplexDashPackage']
         usertoken = request.session['DuplexDashPrivateToken']
         user = User.objects.get(private_token=usertoken)
         user.package = package
