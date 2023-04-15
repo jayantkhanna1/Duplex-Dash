@@ -31,12 +31,14 @@ body{
 #header{
     background : url('../images/bg.png');
     height: 656px;
+    background-position: top;
+    background-size: cover;
 }
 #logo{
     margin-left: 15px;
     margin-top: 15px;
     cursor: pointer;
-    width: 115px;
+    width: 74px;
 }
 #header_bottom{
     margin-top: 150px;
