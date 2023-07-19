@@ -478,7 +478,7 @@ def buynow(request):
                 "country_code": "KE",
                 "first_name": "John",
                 "last_name": "Doe",
-                "city": "Nairobi",
+                "city": "Dehradun",
                 "postal_code": "00100",
                 "address_line1": "123 Main Street",
                 "address_line2": "Apartment 1"
